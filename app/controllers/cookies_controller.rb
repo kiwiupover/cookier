@@ -1,0 +1,2 @@
+class CookiesController < ApplicationController
+end
