@@ -11,10 +11,11 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+//= require lib/handlebars
+//= require lib/ember
+//= require lib/ember-data
 //= require jquery_ujs
-//= require handlebars
-//= require ember
-//= require ember-data
+//= require foundation
 //= require_self
 //= require gsc
 Gsc = Ember.Application.create();

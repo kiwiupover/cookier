@@ -1,4 +1,3 @@
 Gsc.CookiesController = Ember.ArrayController.extend({
-  slogan: 'Cookies',
-  isSlogan: true
+  resourceType: Gsc.Contact
 });

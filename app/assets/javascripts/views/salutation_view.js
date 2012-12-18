@@ -1,3 +1,3 @@
 Gsc.SalutationView = Ember.View.extend({
-  templateName: 'salutation'
+  templateName: 'template/salutation'
 });

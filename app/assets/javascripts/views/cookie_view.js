@@ -1,3 +1,3 @@
 Gsc.CookieView = Ember.View.extend({
-  templateName: 'cookie'
+  templateName: 'templates/cookie'
 });
