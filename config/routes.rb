@@ -1,4 +1,6 @@
 Gsc::Application.routes.draw do
+  resources :participants
+
   resources :cookies
 
   root to: 'app#index'

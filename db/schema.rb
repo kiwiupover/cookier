@@ -11,11 +11,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121217015230) do
+ActiveRecord::Schema.define(:version => 20121222203213) do
 
   create_table "cookies", :force => true do |t|
     t.string   "name"
     t.string   "boxes"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "person_id"
+  end
+
+  create_table "participants", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "phone"
+    t.boolean  "parent"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "people", :force => true do |t|
+    t.string   "name"
+    t.boolean  "parent"
+    t.string   "phone"
+    t.string   "email"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
