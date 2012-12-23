@@ -27,10 +27,6 @@ Gsc.Router = Em.Router.extend({
     participants: Em.Route.extend({
       route: '/participants',
 
-      enter: function(router) {
-        console.log("The participants state");
-      },
-
       showParticipant: function(router, event) {
         router.transitionTo('participants.participant.index', event.context);
       },
@@ -49,10 +45,6 @@ Gsc.Router = Em.Router.extend({
       participant: Em.Route.extend({
         route: ':participant_id',
 
-        enter: function(router) {
-          console.log("the participant state");
-        },
-
         connectOutlets: function(router, context) {
           router.get('participantsController').connectOutlet('participant', context);
         },
@@ -60,12 +52,29 @@ Gsc.Router = Em.Router.extend({
         index: Em.Route.extend({
           route: '/',
 
-          // showEdit: function(router) {
-          //   router.transitionTo('participant.edit');
-          // },
+          showEdit: function(router) {
+            router.transitionTo('participant.edit');
+          },
 
           connectOutlets: function(router, context) {
             router.get('participantController').connectOutlet('showParticipant');
+          }
+        }),
+        edit: Em.Route.extend({
+          route: 'edit',
+
+          cancelEdit: function(router) {
+            router.transitionTo('participants.participant.index');
+          },
+
+          connectOutlets: function(router) {
+            var participantController = router.get('participantController');
+            participantController.connectOutlet('editParticipant', participantController.get('content'));
+            router.get('editParticipantController').enterEditing();
+          },
+
+          exit: function(router) {
+            router.get('editParticipantController').exitEditing();
           }
         })
       })
