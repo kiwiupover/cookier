@@ -1,18 +1,20 @@
-Gsc.Router = Ember.Router.extend({
-  enableLogging:  true,
-  goToCookies:  Ember.Route.transitionTo('cookies'),
-  goToHome:     Ember.Route.transitionTo('root.index'),
+Gsc.Router = Em.Router.extend({
   location: 'hash',
+  enableLogging:  true,
 
-  root: Ember.Route.extend({
-    index: Ember.Route.extend({
+  goToCookies:        Em.Route.transitionTo('cookies'),
+  goToParticipants:   Em.Route.transitionTo('participants.index'),
+  goToHome:           Em.Route.transitionTo('root.index'),
+
+  root: Em.Route.extend({
+    index: Em.Route.extend({
       route: '/',
       connectOutlets: function(router, context){
-        router.get('applicationController').connectOutlet('greeting', 'salutation',
-                                                          { greeting: "My Ember App" });
+        router.get('applicationController').connectOutlet('cookies');
       }
     }),
-    cookies:  Ember.Route.extend({
+
+    cookies:  Em.Route.extend({
       route: '/cookies',
       enter: function ( router ){
         console.log("The cookies sub-state was entered.");
@@ -20,10 +22,53 @@ Gsc.Router = Ember.Router.extend({
       connectOutlets: function(router) {
         router.get('applicationController').connectOutlet('cookies', router.get('store').findAll(Gsc.Cookie));
       }
+    }),
+
+    participants: Em.Route.extend({
+      route: '/participants',
+
+      enter: function(router) {
+        console.log("The participants state");
+      },
+
+      showParticipant: function(router, event) {
+        router.transitionTo('participants.participant.index', event.context);
+      },
+
+      connectOutlets: function(router) {
+        router.get('applicationController').connectOutlet('participants', router.get('store').findAll(Gsc.Participant));
+      },
+
+      index: Em.Route.extend({
+        route: '/',
+
+        connectOutlets: function(router) {
+          router.get('applicationController').connectOutlet('participants');
+        }
+      }),
+      participant: Em.Route.extend({
+        route: ':participant_id',
+
+        enter: function(router) {
+          console.log("the participant state");
+        },
+
+        connectOutlets: function(router, context) {
+          router.get('participantsController').connectOutlet('participant', context);
+        },
+
+        index: Em.Route.extend({
+          route: '/',
+
+          // showEdit: function(router) {
+          //   router.transitionTo('participant.edit');
+          // },
+
+          connectOutlets: function(router, context) {
+            router.get('participantController').connectOutlet('showParticipant');
+          }
+        })
+      })
     })
   })
 });
-
-// Gsc.Router.map(function(match) {
-//   match("/").to("home");
-// });

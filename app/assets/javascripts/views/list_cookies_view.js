@@ -1,5 +1,5 @@
 Gsc.ListCookiesView = Em.View.extend({
-  templateName: 'list_cookies_view',
+  templateName: 'list_cookies',
   tagName: 'li'
   // classNameBindings: 'isActive:active',
 

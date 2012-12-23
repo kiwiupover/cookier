@@ -1,12 +1,13 @@
-<h1>Cookies</h1>
-
-<p>Your content here.</p>
-
-<h3>All Cookies</h3>
-<ul class="no-bullet">
-  {{#each cookie in arrangedContent}}
-    {{view Gsc.ListCookiesView contentBinding="cookies"}}
-  {{/each}}
-</ul>
-
-{{outlet}}
+<div class="row">
+  <div class="columns four">
+    <h3>All Cookies</h3>
+    <ul class="no-bullet">
+      {{#each cookie in arrangedContent}}
+        {{view Gsc.ListCookiesView contentBinding="cookies"}}
+      {{/each}}
+    </ul>
+  </div>
+  <div class="columns eight">
+    {{outlet}}
+  </div>
+</div>
