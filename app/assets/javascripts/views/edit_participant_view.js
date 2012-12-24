@@ -1,10 +1,11 @@
 Gsc.EditParticipantView = Em.View.extend({
   templateName: 'edit_participant',
   tagName: 'form',
-  classNames: 'form-horizontal',
+  classNames: 'custom',
 
   didInsertElement: function() {
     this._super();
+    $(this).foundationCustomForms();
     this.$('input:first').focus();
   },
 

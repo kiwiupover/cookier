@@ -1,9 +1,13 @@
 <div class="row">
   <div class="columns four">
     <h4>Participants</h4>
-    {{#each participant in controller}}
-      {{view Gsc.ShowParticipantView contentBinding="participant"}}
-    {{/each}}
+    <ul class="no-bullet">
+      {{#each participant in controller}}
+        <li>{{view Gsc.ShowParticipantView contentBinding="participant"}}</li>
+      {{/each}}
+    </ul>
+
+    <a class="button small radius" {{action showNewParticipant}}>Add Participant</a>
   </div>
   <div class="columns eight">
     {{outlet}}

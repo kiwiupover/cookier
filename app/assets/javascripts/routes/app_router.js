@@ -31,6 +31,10 @@ Gsc.Router = Em.Router.extend({
         router.transitionTo('participants.participant.index', event.context);
       },
 
+      showNewParticipant: function(router) {
+        router.transitionTo('participants.newParticipant', {});
+      },
+
       connectOutlets: function(router) {
         router.get('applicationController').connectOutlet('participants', router.get('store').findAll(Gsc.Participant));
       },
@@ -42,6 +46,23 @@ Gsc.Router = Em.Router.extend({
           router.get('applicationController').connectOutlet('participants');
         }
       }),
+      newParticipant: Em.Route.extend({
+        route: '/participants/new',
+
+        cancelEdit: function(router) {
+          router.transitionTo('participants.index');
+        },
+
+        connectOutlets: function(router) {
+          router.get('participantsController').connectOutlet('editParticipant', {});
+          router.get('editParticipantController').enterEditing();
+        },
+
+        exit: function(router) {
+          router.get('editParticipantController').exitEditing();
+        }
+      }),
+
       participant: Em.Route.extend({
         route: ':participant_id',
 
