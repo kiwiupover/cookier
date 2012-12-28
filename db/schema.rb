@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121222203213) do
+ActiveRecord::Schema.define(:version => 20121228054528) do
+
+  create_table "cookie_stores", :force => true do |t|
+    t.string   "name"
+    t.date     "date"
+    t.integer  "cookie_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "cookies", :force => true do |t|
     t.string   "name"
@@ -36,6 +44,14 @@ ActiveRecord::Schema.define(:version => 20121222203213) do
     t.boolean  "parent"
     t.string   "phone"
     t.string   "email"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "site_sales", :force => true do |t|
+    t.string   "location"
+    t.datetime "start_at"
+    t.datetime "end_at"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

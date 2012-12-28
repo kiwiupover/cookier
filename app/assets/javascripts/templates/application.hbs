@@ -15,12 +15,11 @@
     <!-- Left Nav Section -->
     <ul class="left">
       <li class="divider"></li>
-      <li>
-        <a class="active" href="#">Site Sales</a>
-      </li>
-      <li>
-        <a class="active" href="#">Girls</a>
-      </li>
+      <li><a {{action goToSiteSales href=true}}>Site Sales</a></li>
+      <li class="divider"></li>
+      <li><a {{action goToParticipants href=true}}>Participants</a></li>
+      <li class="divider"></li>
+      <li><a {{action goToCookies href=true}}>Cookies</a></li>
 
       <li class="divider hide-for-small"></li>
     </ul>
@@ -37,6 +36,7 @@
   <div class="row">
     <ul class="inline-list">
       <li><a {{action goToCookies href=true}}>Cookies</a></li>
+      <li><a {{action goToSiteSales href=true}}>Site Sales</a></li>
       <li><a {{action goToParticipants href=true}}>Participants</a></li>
       <li><a {{action goToHome href=true}}>Home Page</a></li>
     </ul>

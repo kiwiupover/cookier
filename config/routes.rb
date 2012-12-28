@@ -1,4 +1,6 @@
 Gsc::Application.routes.draw do
+  resources :site_sales
+
   resources :participants
 
   resources :cookies

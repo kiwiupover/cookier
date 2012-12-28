@@ -11,7 +11,7 @@ Gsc.Participant = DS.Model.extend({
 
     if (!firstName && !lastName) {
       if (this.get('id') === undefined) {
-        return '(New Contact)';
+        return '(New Participant)';
       } else {
         return '(No Name)';
       }

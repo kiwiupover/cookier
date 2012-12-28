@@ -3,6 +3,7 @@ Gsc.Router = Em.Router.extend({
   enableLogging:  true,
 
   goToCookies:        Em.Route.transitionTo('cookies'),
+  goToSiteSales:      Em.Route.transitionTo('siteSales.index'),
   goToParticipants:   Em.Route.transitionTo('participants.index'),
   goToHome:           Em.Route.transitionTo('root.index'),
 
@@ -22,6 +23,50 @@ Gsc.Router = Em.Router.extend({
       connectOutlets: function(router) {
         router.get('applicationController').connectOutlet('cookies', router.get('store').findAll(Gsc.Cookie));
       }
+    }),
+
+    siteSales: Em.Route.extend({
+      route: 'site_sales',
+
+      enter: function(router) {
+        console.log("Enter the site sales sub-state.")
+      },
+
+      showSiteSale: function(router, event) {
+        router.transitionTo('siteSales.siteSale.index', event.context);
+      },
+
+      connectOutlets: function(router) {
+        router.get('applicationController').connectOutlet('siteSales', router.get('store').findAll(Gsc.SiteSale));
+      },
+
+      index: Em.Route.extend({
+        route: "/",
+
+        connectOutlets: function(router) {
+          router.get('applicationController').connectOutlet('siteSales');
+        }
+      }),
+
+      siteSale: Em.Route.extend({
+        route: ':site_sale_id',
+
+        enter: function(router) {
+          console.log("Entered the site sale sub-state");
+        },
+
+        connectOutlets: function(router, context) {
+          router.get('siteSalesController').connectOutlet('siteSale', context);
+        },
+
+        index: Em.Route.extend({
+          route: '/',
+
+          connectOutlets: function(router, context) {
+            router.get('siteSaleController').connectOutlet('showSiteSale');
+          }
+        })
+      }),
     }),
 
     participants: Em.Route.extend({
