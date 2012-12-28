@@ -3,5 +3,16 @@
 #
 # Examples:
 #
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
+cookies = Cookie.create({ name: 'Thin Mint' },
+                        { name: 'Samoas' },
+                        { name: 'Tagalongs' },
+                        { name: 'Lemonades' },
+                        { name: 'Do-si-dos' },
+                        { name: 'Savannah Smiles' },
+                        { name: 'Thanks-A-Lot' },
+                        { name: 'Dulce de Leche' },
+                        { name: 'Mango Cremes' },
+                        { name: 'Thank U Berry Munch' })
+cookies.save
+
 #   Mayor.create(name: 'Emanuel', city: cities.first)
