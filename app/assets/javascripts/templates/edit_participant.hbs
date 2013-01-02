@@ -15,23 +15,25 @@
     Parent
   </label>
   </div>
-  <div class="parent-elements mtm">
-    <label class="control-label" for="email">Email Address</label>
-    <div class="controls">
-      {{view Ember.TextField valueBinding="email" id="email" placeholder="Email Address" required="true"}}
+  {{#if isParent}}
+    <div class="parent-elements mtm">
+      <label class="control-label" for="email">Email Address</label>
+      <div class="controls">
+        {{view Ember.TextField valueBinding="email" id="email" placeholder="Email Address" required="true"}}
+      </div>
+      <label class="control-label" for="phone">Phone</label>
+      <div class="controls">
+        {{view Ember.TextField valueBinding="phone" id="phone" placeholder="Phone" required="true"}}
+      </div>
     </div>
-    <label class="control-label" for="phone">Phone</label>
-    <div class="controls">
-      {{view Ember.TextField valueBinding="phone" id="phone" placeholder="Phone" required="true"}}
-    </div>
-  </div>
+  {{/if}}
 {{/with}}
-<div class="form-actions">
+<div class="form-actions mtm">
   {{#if content.id}}
     {{submitButton "Update"}}
   {{else}}
     {{submitButton "Create"}}
   {{/if}}
-  <a class="btn" {{action cancelEdit}}>Cancel</a>
+  <a class="mlm btn" {{action cancelEdit}}>Cancel</a>
 </div>
 

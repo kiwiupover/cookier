@@ -38,5 +38,12 @@ Gsc.EditParticipantController = Em.Controller.extend({
     var content = this.get('content');
     content.removeObserver('id', this, 'showRecord');
     Gsc.router.transitionTo('participants.participant.index', content);
-  }
+  },
+
+  isChecked: true,
+
+  _isCheckedChanged: function(){
+      var isChecked = this.get('isChecked');
+      console.log( 'isChecked changed to %@'.fmt(isChecked) );
+  }.observes('isChecked')
 });

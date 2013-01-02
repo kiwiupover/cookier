@@ -2,8 +2,8 @@
 
 one:
   name: MyString
-  boxes: MyString
+  quantity: MyString
 
 two:
   name: MyString
-  boxes: MyString
+  quantity: MyString

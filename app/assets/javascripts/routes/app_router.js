@@ -2,7 +2,7 @@ Gsc.Router = Em.Router.extend({
   location: 'hash',
   enableLogging:  true,
 
-  goToCookies:        Em.Route.transitionTo('cookies'),
+  goToCookieCases:        Em.Route.transitionTo('cookieCases'),
   goToSiteSales:      Em.Route.transitionTo('siteSales.index'),
   goToParticipants:   Em.Route.transitionTo('participants.index'),
   goToHome:           Em.Route.transitionTo('root.index'),
@@ -11,17 +11,17 @@ Gsc.Router = Em.Router.extend({
     index: Em.Route.extend({
       route: '/',
       connectOutlets: function(router, context){
-        router.get('applicationController').connectOutlet('cookies');
+        router.get('applicationController').connectOutlet('cookieCases');
       }
     }),
 
-    cookies:  Em.Route.extend({
-      route: '/cookies',
+    cookieCases:  Em.Route.extend({
+      route: '/cookie_cases',
       enter: function ( router ){
-        console.log("The cookies sub-state was entered.");
+        console.log("The cookie cases sub-state was entered.");
       },
       connectOutlets: function(router) {
-        router.get('applicationController').connectOutlet('cookies', router.get('store').findAll(Gsc.Cookie));
+        router.get('applicationController').connectOutlet('cookieCases', router.get('store').findAll(Gsc.CookieCase));
       }
     }),
 
@@ -63,7 +63,7 @@ Gsc.Router = Em.Router.extend({
           route: '/',
 
           connectOutlets: function(router, context) {
-            router.get('siteSaleController').connectOutlet('showSiteSale');
+            router.get('siteSaleController').connectOutlet('showSiteSale', context);
           }
         })
       }),

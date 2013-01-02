@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CookieTest < ActiveSupport::TestCase
+class CookieCasesControllerTest < ActionController::TestCase
   # test "the truth" do
   #   assert true
   # end
