@@ -2,7 +2,7 @@ Gsc.Router = Em.Router.extend({
   location: 'hash',
   enableLogging:  true,
 
-  goToCookieCases:        Em.Route.transitionTo('cookieCases'),
+  goToCookieCases:    Em.Route.transitionTo('cookieCases'),
   goToSiteSales:      Em.Route.transitionTo('siteSales.index'),
   goToParticipants:   Em.Route.transitionTo('participants.index'),
   goToHome:           Em.Route.transitionTo('root.index'),
