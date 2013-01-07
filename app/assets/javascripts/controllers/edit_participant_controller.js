@@ -40,10 +40,24 @@ Gsc.EditParticipantController = Em.Controller.extend({
     Gsc.router.transitionTo('participants.participant.index', content);
   },
 
+  isExpanded: false,
+
+  expand: function() {
+    if(this.get('parent') === true) {
+      this.set('isExpanded', true);
+    }
+  },
+
+  contract: function() {
+    if(this.get('parent') === false) {
+      this.set('isExpanded', false);
+    }
+  }
+
   isChecked: true,
 
   _isCheckedChanged: function(){
-      var isChecked = this.get('isChecked');
-      console.log( 'isChecked changed to %@'.fmt(isChecked) );
+    var isChecked = this.get('isChecked');
+    console.log( 'isChecked changed to %@'.fmt(isChecked) );
   }.observes('isChecked')
 });

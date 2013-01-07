@@ -1,1 +1,10 @@
-<a {{action showSiteSale siteSale}}>{{siteSale.location}}</a>
+<h2>{{location}}</h2>
+<p>{{startAt}}</p>
+
+The cookies
+{{cookieCase.name}}
+{{#each cc in content.cookie_cases}}
+  <p>Name: {{cc.name}} {{cc.quantity}} <b>{{content.location}}</b> {{name}} the name</p>
+{{/each}}
+
+{{outlet}}

@@ -1,7 +1,10 @@
-<h1>{{location}}</h1>
+<h4>{{controller.location}}</h4>
+<p>{{controller.startAt}}</p>
 
-{{#each cc in content.cookieCases}}
-  <p>Name: {{cc.name}} {{cc.quantity}} <b>{{location}}</b> {{name}} the name</p>
+Cookies
+{{#each cookie in controller.cookies}}
+  Dave {{cookie.quantity}}
 {{/each}}
+
 
 {{outlet}}

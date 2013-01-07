@@ -15,11 +15,11 @@
     <!-- Left Nav Section -->
     <ul class="left">
       <li class="divider"></li>
-      <li><a {{action goToSiteSales href=true}}>Site Sales</a></li>
+      <li>{{#linkTo siteSales siteSales}}Site Sales{{/linkTo}}</li>
       <li class="divider"></li>
-      <li><a {{action goToParticipants href=true}}>Participants</a></li>
+      <li>{{#linkTo participants participants}}Participants{{/linkTo}}</li>
       <li class="divider"></li>
-      <li><a {{action goToCookieCases href=true}}>Cookies</a></li>
+      <li>{{#linkTo cookiesCases cookieCases}}Cookies{{/linkTo}}</li>
 
       <li class="divider hide-for-small"></li>
     </ul>
@@ -35,10 +35,10 @@
   </div>
   <div class="row">
     <ul class="inline-list">
-      <li><a {{action goToCookieCases href=true}}>Cookies</a></li>
-      <li><a {{action goToSiteSales href=true}}>Site Sales</a></li>
-      <li><a {{action goToParticipants href=true}}>Participants</a></li>
-      <li><a {{action goToHome href=true}}>Home Page</a></li>
+      <li><a href="/">Home</a></li>
+      <li>{{#linkTo siteSales siteSales}}Site Sales{{/linkTo}}</li>
+      <li>{{#linkTo participants participants}}Participants{{/linkTo}}</li>
+      <li>{{#linkTo cookieCases cookieCases}}Cookies{{/linkTo}}</li>
     </ul>
   </div>
 </div>
