@@ -1,5 +1,5 @@
-// Version: v1.0.0-pre.2-306-g1bf0df4
-// Last commit: 1bf0df4 (2013-01-06 09:57:01 -0800)
+// Version: v1.0.0-pre.2-291-g4785901
+// Last commit: 4785901 (2013-01-05 18:57:16 +0100)
 
 
 (function() {
@@ -142,8 +142,8 @@ if ('undefined' !== typeof window) {
 
 })();
 
-// Version: v1.0.0-pre.2-306-g1bf0df4
-// Last commit: 1bf0df4 (2013-01-06 09:57:01 -0800)
+// Version: v1.0.0-pre.2-307-g8f60000
+// Last commit: 8f60000 (2013-01-06 15:12:15 -0800)
 
 
 (function() {
@@ -22801,6 +22801,18 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
 var get = Ember.get;
 
 Ember.ControllerMixin.reopen({
+  concatenatedProperties: ['needs'],
+  needs: [],
+
+  init: function() {
+    this._super.apply(this, arguments);
+
+    // Structure asserts to still do verification but not string concat in production
+    if(!verifyDependencies(this)) {
+      Ember.assert("Missing dependencies", false);
+    }
+  },
+
   transitionTo: function() {
     var router = get(this, 'target');
 
@@ -22812,6 +22824,26 @@ Ember.ControllerMixin.reopen({
     return container.lookup('controller:' + controllerName);
   }
 });
+
+function verifyDependencies(controller) {
+  var needs = get(controller, 'needs'),
+      container = get(controller, 'container'),
+      dependency, satisfied = true;
+
+  for (var i=0, l=needs.length; i<l; i++) {
+    dependency = needs[i];
+    if (dependency.indexOf(':') === -1) {
+      dependency = "controller:" + dependency;
+    }
+
+    if (!container.has(dependency)) {
+      satisfied = false;
+      Ember.assert(this + " needs " + dependency + " but it does not exist", false);
+    }
+  }
+
+  return satisfied;
+}
 
 })();
 
@@ -25262,8 +25294,8 @@ Ember States
 
 
 })();
-// Version: v1.0.0-pre.2-306-g1bf0df4
-// Last commit: 1bf0df4 (2013-01-06 09:57:01 -0800)
+// Version: v1.0.0-pre.2-307-g8f60000
+// Last commit: 8f60000 (2013-01-06 15:12:15 -0800)
 
 
 (function() {

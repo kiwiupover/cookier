@@ -3,11 +3,11 @@
     <h4>Participants</h4>
     <ul class="no-bullet">
       {{#each participant in controller}}
-        <li>{{#linkTo showParticipant participant}}{{participant.fullName}}{{/linkTo}}</li>
+        {{view Gsc.ParticipantInListView contentBinding="participant"}}
       {{/each}}
     </ul>
 
-
+    {{#linkTo "addParticipants" class="button small radius mbm"}}Add Participant{{/linkTo}}
   </div>
   <div class="columns eight">
     {{outlet}}
