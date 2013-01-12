@@ -1,4 +1,4 @@
-Gsc.ParticipantRoute = Em.Route.extend({
+Gsc.ParticipantsParticipantRoute = Em.Route.extend({
   exit: function() {
     this._super();
     this.controllerFor('participants').set('activeContactId', null);
@@ -8,4 +8,5 @@ Gsc.ParticipantRoute = Em.Route.extend({
     this.controllerFor('participants').set('activeContactId', model.id);
     controller.set('content', Gsc.Participant.find(model.id));
   }
+
 });

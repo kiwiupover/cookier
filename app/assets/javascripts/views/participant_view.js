@@ -1,3 +1,8 @@
 Gsc.ParticipantView = Ember.View.extend({
-  templateName: 'participant'
+  templateName: 'participant',
+
+  enter: function() {
+    alert("ParticipantView");
+  }
+
 });

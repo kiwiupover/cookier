@@ -4004,10 +4004,12 @@ DS.belongsTo = function(type, options) {
 
     id = data[key];
 
-    if (typeof id === 'object') {
+    if(!id) {
+      return null;
+    } else if (typeof id === 'object') {
       return store.findByClientId(type, id.clientId);
     } else {
-      return id ? store.find(type, id) : null;
+      return store.find(type, id);
     }
   }).property('data').meta(meta);
 };
@@ -6016,6 +6018,19 @@ DS.Serializer = Ember.Object.extend({
     this.transforms[type] = transform;
   },
 
+  registerEnumTransform: function(type, objects) {
+    var transform = {
+      deserialize: function(deserialized) {
+        return objects.objectAt(deserialized);
+      },
+      serialize: function(serialized) {
+        return objects.indexOf(serialized);
+      },
+      values: objects
+    };
+    this.registerTransform(type, transform);
+  },
+
   /**
     MAPPING CONVENIENCE
   */
@@ -7043,6 +7058,36 @@ DS.Adapter = Ember.Object.extend(DS._Mappable, {
 
   registerTransform: function(attributeType, transform) {
     get(this, 'serializer').registerTransform(attributeType, transform);
+  },
+
+  /**
+    A public method that allows you to register an enumerated
+    type on your adapter.  This is useful if you want to utilize
+    a text representation of an integer value.
+
+    Eg: Say you want to utilize "low","medium","high" text strings
+    in your app, but you want to persist those as 0,1,2 in your backend.
+    You would first register the transform on your adapter instance:
+
+    adapter.registerEnumTransform('priority', ['low', 'medium', 'high']);
+
+    You would then refer to the 'priority' DS.attr in your model:
+    App.Task = DS.Model.extend({
+      priority: DS.attr('priority')
+    });
+
+    And lastly, you would set/get the text representation on your model instance,
+    but the transformed result will be the index number of the type.
+
+    App:   myTask.get('priority') => 'low'
+    Server Response / Load:  { myTask: {priority: 0} }
+
+    @param {String} type of the transform
+    @param {Array} array of String objects to use for the enumerated values.
+      This is an ordered list and the index values will be used for the transform.
+  */
+  registerEnumTransform: function(attributeType, objects) {
+    get(this, 'serializer').registerEnumTransform(attributeType, objects);
   },
 
   /**

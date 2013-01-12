@@ -1,9 +1,9 @@
-Gsc.AddParticipantRoute = Ember.Route.extend({
+Gsc.ParticipantsNewRoute = Ember.Route.extend({
   init: function() {
     this._super();
 
     // reuse the EditContactController for adding contacts
-    this.container.register('controller', 'addPArticipantRoute', Gsc.EditParticipantController);
+    this.container.register('controller', 'participantsNewRoute', Gsc.ParticipantEditController);
   },
 
   setupController: function(controller) {
@@ -31,7 +31,7 @@ Gsc.AddParticipantRoute = Ember.Route.extend({
 
   events: {
     cancel: function() {
-      this.transitionTo('participantsIndex');
+      this.transitionTo('participants');
     },
 
     save: function(participant) {
