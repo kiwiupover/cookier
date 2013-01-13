@@ -3,8 +3,10 @@ Gsc.Router.map(function(match) {
   match('/cookies').to('cookiesCases');
 
   match('/site_sales').to('siteSales', function(match) {
-    match('/:site_sale_id').to('siteSale');
-    match('/:site_sale_id/new').to('newSiteSale');
+    match('/new').to('new');
+    match('/:site_sale_id').to('siteSale', function(match){
+      match('/edit').to('edit');
+    });
   });
 
   match('/participants').to('participants', function(match){

@@ -1,4 +1,4 @@
-Gsc.EditParticipantView = Em.View.extend({
+Gsc.ParticipantsParticipantEditView = Em.View.extend({
   didInsertElement: function() {
     this._super();
     $(this).foundationCustomForms();

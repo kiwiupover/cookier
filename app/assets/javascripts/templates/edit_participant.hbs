@@ -1,0 +1,38 @@
+{{debugger}}
+<form {{action save content on="submit"}} class="custom">
+  <h4>{{#if id}}Edit{{else}}Create{{/if}} Participant</h4>
+
+  <label class="control-label" for="firstName">First name</label>
+  <div class="controls">
+    {{view Ember.TextField valueBinding="firstName" id="firstName" placeholder="First name" required="true"}}
+  </div>
+  <label class="control-label" for="lastName">Last name</label>
+  <div class="controls">
+    {{view Ember.TextField valueBinding="lastName" id="lastName" placeholder="Last name" required="true"}}
+  </div>
+  <div class="checkbox">
+    <label for="phone">
+    {{view Em.Checkbox checkedBinding="isExpaneded"}}
+    Parent
+  </label>
+  </div>
+  <div class="parent-elements mtm">
+    <label class="control-label" for="email">Email Address</label>
+    <div class="controls">
+      {{view Ember.TextField valueBinding="email" id="email" placeholder="Email Address" required="true"}}
+    </div>
+    <label class="control-label" for="phone">Phone</label>
+    <div class="controls">
+      {{view Ember.TextField valueBinding="phone" id="phone" placeholder="Phone" required="true"}}
+    </div>
+  </div>
+
+  <div class="form-actions mtm">
+    {{#if id}}
+      {{submitButton "Update"}}
+    {{else}}
+      {{submitButton "Create"}}
+    {{/if}}
+    <a class="mlm btn" {{action cancel content}}>Cancel</a>
+  </div>
+</form>

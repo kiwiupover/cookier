@@ -1,3 +1,3 @@
-Gsc.EditParticipantController = Em.ObjectController.extend({
+Gsc.ParticipantsParticipantEditController = Em.ObjectController.extend({
   content: null
 });

@@ -1,3 +1,7 @@
 Gsc.ParticipantsParticipantController = Ember.ObjectController.extend({
-  content: null
+  content: null,
+
+  enter: function  () {
+    alert("aaaaadalkdsjfdsal");
+  }
 });

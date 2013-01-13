@@ -1,5 +1,5 @@
-// Version: v1.0.0-pre.2-366-g4772b18
-// Last commit: 4772b18 (2013-01-09 18:56:47 -0800)
+// Version: v1.0.0-pre.2-378-g2e2b4ec
+// Last commit: 2e2b4ec (2013-01-12 15:56:53 -0800)
 
 
 (function() {
@@ -142,8 +142,8 @@ if ('undefined' !== typeof window) {
 
 })();
 
-// Version: v1.0.0-pre.2-366-g4772b18
-// Last commit: 4772b18 (2013-01-09 18:56:47 -0800)
+// Version: v1.0.0-pre.2-378-g2e2b4ec
+// Last commit: 2e2b4ec (2013-01-12 15:56:53 -0800)
 
 
 (function() {
@@ -21437,6 +21437,26 @@ define("router",
       },
 
       /**
+        Hook point for updating the URL.
+
+        @param {String} url a URL to update to
+      */
+      updateURL: function() {
+        throw "updateURL is not implemented";
+      },
+
+      /**
+        Hook point for replacing the current URL, i.e. with replaceState
+
+        By default this behaves the same as `updateURL`
+
+        @param {String} url a URL to update to
+      */
+      replaceURL: function(url) {
+        this.updateURL(url);
+      },
+
+      /**
         Transition into the specified named route.
 
         If necessary, trigger the exit callback on any handlers
@@ -21445,18 +21465,21 @@ define("router",
         @param {String} name the name of the route
       */
       transitionTo: function(name) {
-        var output = this._paramsForHandler(name, [].slice.call(arguments, 1), function(handler) {
-          if (handler.hasOwnProperty('context')) { return handler.context; }
-          if (handler.deserialize) { return handler.deserialize({}); }
-          return null;
-        });
+        var args = Array.prototype.slice.call(arguments, 1);
+        doTransition(this, name, this.updateURL, args);
+      },
 
-        var params = output.params, toSetup = output.toSetup;
+      /**
+        Identical to `transitionTo` except that the current URL will be replaced
+        if possible.
 
-        var url = this.recognizer.generate(name, params);
-        this.updateURL(url);
+        This method is intended primarily for use with `replaceState`.
 
-        setupContexts(this, toSetup);
+        @param {String} name the name of the route
+      */
+      replaceWith: function(name) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        doTransition(this, name, this.replaceURL, args);
       },
 
       /**
@@ -21626,6 +21649,24 @@ define("router",
       loaded(router);
       var handler = router.getHandler('failure');
       if (handler && handler.setup) { handler.setup(error); }
+    }
+
+    /**
+      @private
+    */
+    function doTransition(router, name, method, args) {
+      var output = router._paramsForHandler(name, args, function(handler) {
+        if (handler.hasOwnProperty('context')) { return handler.context; }
+        if (handler.deserialize) { return handler.deserialize({}); }
+        return null;
+      });
+
+      var params = output.params, toSetup = output.toSetup;
+
+      var url = router.recognizer.generate(name, params);
+      method.call(router, url);
+
+      setupContexts(router, toSetup);
     }
 
     /**
@@ -21979,8 +22020,23 @@ Ember.Router = Ember.Object.extend({
     this.notifyPropertyChange('url');
   },
 
-  transitionTo: function() {
-    this.router.transitionTo.apply(this.router, arguments);
+  transitionTo: function(passedName) {
+    var args = [].slice.call(arguments), name;
+
+    if (!this.router.hasRoute(passedName)) {
+      name = args[0] = passedName + '.index';
+    } else {
+      name = passedName;
+    }
+
+    Ember.assert("The route " + passedName + " was not found", this.router.hasRoute(name));
+
+    this.router.transitionTo.apply(this.router, args);
+    this.notifyPropertyChange('url');
+  },
+
+  replaceWith: function() {
+    this.router.replaceWith.apply(this.router, arguments);
     this.notifyPropertyChange('url');
   },
 
@@ -22007,14 +22063,23 @@ Ember.Router = Ember.Object.extend({
   },
 
   _lookupActiveView: function(templateName) {
-    return this._activeViews[templateName];
+    var active = this._activeViews[templateName];
+    return active && active[0];
   },
 
   _connectActiveView: function(templateName, view) {
-    this._activeViews[templateName] = view;
-    view.one('willDestroyElement', this, function() {
+    var existing = this._activeViews[templateName];
+
+    if (existing) {
+      existing[0].off('willDestroyElement', this, existing[1]);
+    }
+
+    var disconnect = function() {
       delete this._activeViews[templateName];
-    });
+    };
+
+    this._activeViews[templateName] = [view, disconnect];
+    view.one('willDestroyElement', this, disconnect);
   }
 });
 
@@ -22029,7 +22094,7 @@ Ember.Router.reopenClass({
   }
 });
 
-function getHandlerFunction(router, activeViews) {
+function getHandlerFunction(router) {
   var seen = {}, container = router.container;
 
   return function(name) {
@@ -22080,15 +22145,27 @@ function routePath(handlerInfos) {
 function setupRouter(emberRouter, router, location) {
   var lastURL;
 
-  function updateURL() {
-    location.setURL(lastURL);
-  }
+  router.getHandler = getHandlerFunction(emberRouter);
 
-  router.getHandler = getHandlerFunction(emberRouter, emberRouter._activeViews);
+  var doUpdateURL = function() {
+    location.setURL(lastURL);
+  };
+
   router.updateURL = function(path) {
     lastURL = path;
-    Ember.run.once(updateURL);
+    Ember.run.once(doUpdateURL);
   };
+
+  if (location.replaceURL) {
+    var doReplaceURL = function() {
+      location.replaceURL(lastURL);
+    };
+
+    router.replaceURL = function(path) {
+      lastURL = path;
+      Ember.run.once(doReplaceURL);
+    };
+  }
 
   router.didTransition = function(infos) {
     emberRouter.didTransition(infos);
@@ -22102,16 +22179,16 @@ function setupRouterDelegate(router, namespace) {
 
       if (context === 'application' || context === undefined) {
         return handler;
-      } else {
+      } else if (handler.indexOf('.') === -1) {
         context = context.split('.').slice(-1)[0];
         return context + '.' + handler;
+      } else {
+        return handler;
       }
     },
 
     contextEntered: function(target, match) {
       match('/').to('index');
-
-      namespace[classify(target)] = Ember.Namespace.create();
     }
   };
 }
@@ -22156,6 +22233,19 @@ Ember.Route = Ember.Object.extend({
   transitionTo: function() {
     this.transitioned = true;
     return this.router.transitionTo.apply(this.router, arguments);
+  },
+
+  /**
+    Transition into another route while replacing the current URL if
+    possible. Identical to `transitionTo` in all other respects.
+
+    @method replaceWith
+    @param {String} name the name of the route
+    @param {...Object} models the
+  */
+  replaceWith: function() {
+    this.transitioned = true;
+    return this.router.replaceWith.apply(this.router, arguments);
   },
 
   send: function() {
@@ -22602,6 +22692,7 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
     currentWhen: null,
     title: null,
     activeClass: 'active',
+    replace: false,
     attributeBindings: ['href', 'title'],
     classNameBindings: 'active',
 
@@ -22623,7 +22714,13 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
       if (!isSimpleClick(event)) { return true; }
 
       var router = this.get('router');
-      router.transitionTo.apply(router, args(this, router));
+
+      if (this.get('replace')) {
+        router.replaceWith.apply(router, args(this, router));
+      } else {
+        router.transitionTo.apply(router, args(this, router));
+      }
+
       return false;
     },
 
@@ -22804,6 +22901,8 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
     if (controller && context) {
       controller.set('model', context);
     }
+
+    controller.set('target', options.data.keywords.controller);
 
     options.hash.viewName = name;
     options.hash.template = container.lookup('template:' + name);
@@ -23111,10 +23210,21 @@ Ember.ControllerMixin.reopen({
     }
   },
 
-  transitionTo: function() {
+  transitionToRoute: function() {
     var router = get(this, 'target');
 
     return router.transitionTo.apply(router, arguments);
+  },
+
+  transitionTo: function() {
+    Ember.deprecate("transitionTo is deprecated. Please use transitionToRoute.");
+    return this.transitionToRoute.apply(this, arguments);
+  },
+
+  replaceRoute: function() {
+    var router = get(this, 'target');
+
+    return router.replaceWith.apply(router, arguments);
   },
 
   controllerFor: function(controllerName) {
@@ -23209,10 +23319,11 @@ var get = Ember.get, set = Ember.set;
 
   getURL: returns the current URL
   setURL(path): sets the current URL
+  replaceURL(path): replace the current URL (optional)
   onUpdateURL(callback): triggers the callback when the URL changes
   formatURL(url): formats `url` to be placed into `href` attribute
 
-  Calling setURL will not trigger onUpdateURL callbacks.
+  Calling setURL or replaceURL will not trigger onUpdateURL callbacks.
 
   TODO: This should perhaps be moved so that it's visible in the doc output.
 */
@@ -23468,6 +23579,24 @@ Ember.HistoryLocation = Ember.Object.extend({
     if (this.getState() && this.getState().path !== path) {
       popstateReady = true;
       this.pushState(path);
+    }
+  },
+
+  /**
+    @private
+
+    Uses `history.replaceState` to update the url without a page reload
+    or history modification.
+
+    @method replaceURL
+    @param path {String}
+  */
+  replaceURL: function(path) {
+    path = this.formatURL(path);
+
+    if (this.getState() && this.getState().path !== path) {
+      popstateReady = true;
+      this.replaceState(path);
     }
   },
 
@@ -25602,8 +25731,8 @@ Ember States
 
 
 })();
-// Version: v1.0.0-pre.2-366-g4772b18
-// Last commit: 4772b18 (2013-01-09 18:56:47 -0800)
+// Version: v1.0.0-pre.2-378-g2e2b4ec
+// Last commit: 2e2b4ec (2013-01-12 15:56:53 -0800)
 
 
 (function() {
@@ -25614,3 +25743,4 @@ Ember
 */
 
 })();
+

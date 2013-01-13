@@ -1,4 +1,4 @@
-Gsc.ParticipantEditRoute = Ember.Route.extend({
+Gsc.ParticipantsParticipantEditRoute = Ember.Route.extend({
   setupController: function(controller, model) {
     this._super(controller, model);
 
