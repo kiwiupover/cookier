@@ -18,5 +18,7 @@
 //= require foundation
 //= require_self
 //= require gsc
-Gsc = Ember.Application.create();
+Gsc = Ember.Application.create({
+  LOG_TRANSITIONS: true
+});
 //= require_tree .

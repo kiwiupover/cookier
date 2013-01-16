@@ -11,9 +11,9 @@ Gsc.Router.map(function(match) {
 
   match('/participants').to('participants', function(match){
     match('/new').to('new');
-    match('/:participant_id').to('participant', function(match) {
-      match('/edit').to('edit');
-    });
+  });
+  match('/:participant_id').to('participant', function(match) {
+    match('/edit').to('edit');
   });
 
 });

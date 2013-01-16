@@ -7,6 +7,7 @@ gem 'rails', '3.2.8'
 
 gem 'sqlite3'
 
+gem "active_model_serializers", :git => "git://github.com/rails-api/active_model_serializers.git"
 gem "ember-rails", :git => 'git://github.com/emberjs/ember-rails.git'
 gem "haml-rails", "~> 0.3.5"
 

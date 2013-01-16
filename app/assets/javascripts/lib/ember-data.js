@@ -1053,7 +1053,6 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
       // Instructs the adapter to extract information from the
       // opaque data and materialize the record's attributes and
       // relationships.
-      debugger;
       adapter.materialize(record, data, prematerialized);
     }
   },
@@ -2118,7 +2117,6 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
     @return {String} id the id represented by the data
   */
   preprocessData: function(type, data) {
-    debugger;
     return this.adapterForType(type).extractId(type, data);
   },
 
@@ -5746,7 +5744,6 @@ DS.Serializer = Ember.Object.extend({
       if (prematerialized && prematerialized.hasOwnProperty('id')) {
         id = prematerialized.id;
       } else {
-        debugger;
         id = this.extractId(record.constructor, serialized);
       }
       record.materializeId(id);

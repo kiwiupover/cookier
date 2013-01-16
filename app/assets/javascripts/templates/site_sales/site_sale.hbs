@@ -1,10 +1,13 @@
-<h4>{{location}}</h4>
+<h2>{{location}}</h2>
 <p>{{startAt}}</p>
 
-Cookies
-{{#each cookieCases}}
-  Dave {{name}}
-{{/each}}
-
+<h3>Cookies</h3>
+<ul class="no-bullet">
+  {{#each cookieCases}}
+    <li>
+      <strong>{{name}}</strong> {{quantity}}
+    </li>
+  {{/each}}
+</ul>
 
 {{outlet}}
