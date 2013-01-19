@@ -1,6 +1,5 @@
-
 <form {{action save content on="submit"}} class="custom">
-  <h4>{{#if id}}Edit{{else}}Create{{/if}} Participant</h4>
+  <h3>{{headerTitle}} {{fullName}}</h3>
 
   <label class="control-label" for="firstName">First name</label>
   <div class="controls">
@@ -28,11 +27,8 @@
   </div>
 
   <div class="form-actions mtm">
-    {{#if id}}
-      {{submitButton "Update"}}
-    {{else}}
-      {{submitButton "Create"}}
-    {{/if}}
-    <a class="mlm btn" {{action cancel content}}>Cancel</a>
+
+    <a href='#' {{action update target='controller'}} class='button radius'>{{buttonTitle}}</a>
+    <a href='#' {{action cancel target='controller'}} class='mlm'>Cancel</a>
   </div>
 </form>

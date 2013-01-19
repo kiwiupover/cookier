@@ -1,19 +1,16 @@
-Gsc.Router.map(function(match) {
-  match('/').to('cookieCases');
-  match('/cookies').to('cookiesCases');
+Gsc.Router.map(function() {
+  location: 'history',
+  this.resource('cookieCases');
 
-  match('/site_sales').to('siteSales', function(match) {
-    match('/new').to('new');
-    match('/:site_sale_id').to('siteSale', function(match){
-      match('/edit').to('edit');
-    });
+  this.resource('siteSales', function(){
+    this.route('new');
+    this.route('edit', {path: '/:site_sale_id/edit'});
+    this.route('show', {path: '/:site_sale_id'});
   });
 
-  match('/participants').to('participants', function(match){
-    match('/new').to('new');
+  this.resource('participants', function(){
+    this.route('new');
+    this.route('edit', {path: '/:participant_id/edit'});
+    this.route('show', {path: '/:participant_id'});
   });
-  match('/:participant_id').to('participant', function(match) {
-    match('/edit').to('edit');
-  });
-
 });

@@ -1,5 +1,5 @@
-// Version: v1.0.0-pre.2-378-g2e2b4ec
-// Last commit: 2e2b4ec (2013-01-12 15:56:53 -0800)
+// Version: v1.0.0-pre.2-408-g43354a9
+// Last commit: 43354a9 (2013-01-15 18:12:34 -0800)
 
 
 (function() {
@@ -142,8 +142,8 @@ if ('undefined' !== typeof window) {
 
 })();
 
-// Version: v1.0.0-pre.2-378-g2e2b4ec
-// Last commit: 2e2b4ec (2013-01-12 15:56:53 -0800)
+// Version: v1.0.0-pre.2-408-g43354a9
+// Last commit: 43354a9 (2013-01-15 18:12:34 -0800)
 
 
 (function() {
@@ -6125,6 +6125,13 @@ define("container",
 
         delete this.parent;
         this.isDestroyed = true;
+      },
+
+      reset: function() {
+        for (var i=0, l=this.children.length; i<l; i++) {
+          resetCache(this.children[i]);
+        }
+        resetCache(this);
       }
     };
 
@@ -6203,6 +6210,14 @@ define("container",
         if (option(container, key, 'instantiate') === false) { return; }
         callback(value);
       });
+    }
+
+    function resetCache(container) {
+      container.cache.eachLocal(function(key, value) {
+        if (option(container, key, 'instantiate') === false) { return; }
+        value.destroy();
+      });
+      container.cache.dict = {};
     }
 
     return Container;
@@ -6645,7 +6660,7 @@ Ember.Error.prototype = Ember.create(Error.prototype);
 var STRING_DASHERIZE_REGEXP = (/[ _]/g);
 var STRING_DASHERIZE_CACHE = {};
 var STRING_DECAMELIZE_REGEXP = (/([a-z])([A-Z])/g);
-var STRING_CAMELIZE_REGEXP = (/(\-|_|\s)+(.)?/g);
+var STRING_CAMELIZE_REGEXP = (/(\-|_|\.|\s)+(.)?/g);
 var STRING_UNDERSCORE_REGEXP_1 = (/([a-z\d])([A-Z]+)/g);
 var STRING_UNDERSCORE_REGEXP_2 = (/\-|\s+/g);
 
@@ -16768,464 +16783,464 @@ Ember Views
 })();
 
 (function() {
-// ==========================================================================
-// Project:   metamorph
-// Copyright: ©2011 My Company Inc. All rights reserved.
-// ==========================================================================
-
 define("metamorph",
   [],
   function() {
+    "use strict";
+    // ==========================================================================
+    // Project:   metamorph
+    // Copyright: ©2011 My Company Inc. All rights reserved.
+    // ==========================================================================
 
-  var K = function(){},
-      guid = 0,
-      document = window.document,
+    var K = function(){},
+        guid = 0,
+        document = window.document,
 
-      // Feature-detect the W3C range API, the extended check is for IE9 which only partially supports ranges
-      supportsRange = ('createRange' in document) && (typeof Range !== 'undefined') && Range.prototype.createContextualFragment,
+        // Feature-detect the W3C range API, the extended check is for IE9 which only partially supports ranges
+        supportsRange = ('createRange' in document) && (typeof Range !== 'undefined') && Range.prototype.createContextualFragment,
 
-      // Internet Explorer prior to 9 does not allow setting innerHTML if the first element
-      // is a "zero-scope" element. This problem can be worked around by making
-      // the first node an invisible text node. We, like Modernizr, use &shy;
-      needsShy = (function(){
-        var testEl = document.createElement('div');
-        testEl.innerHTML = "<div></div>";
-        testEl.firstChild.innerHTML = "<script></script>";
-        return testEl.firstChild.innerHTML === '';
-      })(),
+        // Internet Explorer prior to 9 does not allow setting innerHTML if the first element
+        // is a "zero-scope" element. This problem can be worked around by making
+        // the first node an invisible text node. We, like Modernizr, use &shy;
+        needsShy = (function(){
+          var testEl = document.createElement('div');
+          testEl.innerHTML = "<div></div>";
+          testEl.firstChild.innerHTML = "<script></script>";
+          return testEl.firstChild.innerHTML === '';
+        })(),
 
 
-      // IE 8 (and likely earlier) likes to move whitespace preceeding
-      // a script tag to appear after it. This means that we can
-      // accidentally remove whitespace when updating a morph.
-      movesWhitespace = (function() {
-        var testEl = document.createElement('div');
-        testEl.innerHTML = "Test: <script type='text/x-placeholder'></script>Value";
-        return testEl.childNodes[0].nodeValue === 'Test:' &&
-                testEl.childNodes[2].nodeValue === ' Value';
-      })();
+        // IE 8 (and likely earlier) likes to move whitespace preceeding
+        // a script tag to appear after it. This means that we can
+        // accidentally remove whitespace when updating a morph.
+        movesWhitespace = (function() {
+          var testEl = document.createElement('div');
+          testEl.innerHTML = "Test: <script type='text/x-placeholder'></script>Value";
+          return testEl.childNodes[0].nodeValue === 'Test:' &&
+                  testEl.childNodes[2].nodeValue === ' Value';
+        })();
 
-  // Constructor that supports either Metamorph('foo') or new
-  // Metamorph('foo');
-  //
-  // Takes a string of HTML as the argument.
+    // Constructor that supports either Metamorph('foo') or new
+    // Metamorph('foo');
+    //
+    // Takes a string of HTML as the argument.
 
-  var Metamorph = function(html) {
-    var self;
+    var Metamorph = function(html) {
+      var self;
 
-    if (this instanceof Metamorph) {
-      self = this;
-    } else {
-      self = new K();
-    }
-
-    self.innerHTML = html;
-    var myGuid = 'metamorph-'+(guid++);
-    self.start = myGuid + '-start';
-    self.end = myGuid + '-end';
-
-    return self;
-  };
-
-  K.prototype = Metamorph.prototype;
-
-  var rangeFor, htmlFunc, removeFunc, outerHTMLFunc, appendToFunc, afterFunc, prependFunc, startTagFunc, endTagFunc;
-
-  outerHTMLFunc = function() {
-    return this.startTag() + this.innerHTML + this.endTag();
-  };
-
-  startTagFunc = function() {
-    /*
-     * We replace chevron by its hex code in order to prevent escaping problems.
-     * Check this thread for more explaination:
-     * http://stackoverflow.com/questions/8231048/why-use-x3c-instead-of-when-generating-html-from-javascript
-     */
-    return "<script id='" + this.start + "' type='text/x-placeholder'>\x3C/script>";
-  };
-
-  endTagFunc = function() {
-    /*
-     * We replace chevron by its hex code in order to prevent escaping problems.
-     * Check this thread for more explaination:
-     * http://stackoverflow.com/questions/8231048/why-use-x3c-instead-of-when-generating-html-from-javascript
-     */
-    return "<script id='" + this.end + "' type='text/x-placeholder'>\x3C/script>";
-  };
-
-  // If we have the W3C range API, this process is relatively straight forward.
-  if (supportsRange) {
-
-    // Get a range for the current morph. Optionally include the starting and
-    // ending placeholders.
-    rangeFor = function(morph, outerToo) {
-      var range = document.createRange();
-      var before = document.getElementById(morph.start);
-      var after = document.getElementById(morph.end);
-
-      if (outerToo) {
-        range.setStartBefore(before);
-        range.setEndAfter(after);
+      if (this instanceof Metamorph) {
+        self = this;
       } else {
-        range.setStartAfter(before);
-        range.setEndBefore(after);
+        self = new K();
       }
 
-      return range;
+      self.innerHTML = html;
+      var myGuid = 'metamorph-'+(guid++);
+      self.start = myGuid + '-start';
+      self.end = myGuid + '-end';
+
+      return self;
     };
 
-    htmlFunc = function(html, outerToo) {
-      // get a range for the current metamorph object
-      var range = rangeFor(this, outerToo);
+    K.prototype = Metamorph.prototype;
 
-      // delete the contents of the range, which will be the
-      // nodes between the starting and ending placeholder.
-      range.deleteContents();
+    var rangeFor, htmlFunc, removeFunc, outerHTMLFunc, appendToFunc, afterFunc, prependFunc, startTagFunc, endTagFunc;
 
-      // create a new document fragment for the HTML
-      var fragment = range.createContextualFragment(html);
-
-      // insert the fragment into the range
-      range.insertNode(fragment);
+    outerHTMLFunc = function() {
+      return this.startTag() + this.innerHTML + this.endTag();
     };
 
-    removeFunc = function() {
-      // get a range for the current metamorph object including
-      // the starting and ending placeholders.
-      var range = rangeFor(this, true);
-
-      // delete the entire range.
-      range.deleteContents();
+    startTagFunc = function() {
+      /*
+       * We replace chevron by its hex code in order to prevent escaping problems.
+       * Check this thread for more explaination:
+       * http://stackoverflow.com/questions/8231048/why-use-x3c-instead-of-when-generating-html-from-javascript
+       */
+      return "<script id='" + this.start + "' type='text/x-placeholder'>\x3C/script>";
     };
 
-    appendToFunc = function(node) {
-      var range = document.createRange();
-      range.setStart(node);
-      range.collapse(false);
-      var frag = range.createContextualFragment(this.outerHTML());
-      node.appendChild(frag);
+    endTagFunc = function() {
+      /*
+       * We replace chevron by its hex code in order to prevent escaping problems.
+       * Check this thread for more explaination:
+       * http://stackoverflow.com/questions/8231048/why-use-x3c-instead-of-when-generating-html-from-javascript
+       */
+      return "<script id='" + this.end + "' type='text/x-placeholder'>\x3C/script>";
     };
 
-    afterFunc = function(html) {
-      var range = document.createRange();
+    // If we have the W3C range API, this process is relatively straight forward.
+    if (supportsRange) {
+
+      // Get a range for the current morph. Optionally include the starting and
+      // ending placeholders.
+      rangeFor = function(morph, outerToo) {
+        var range = document.createRange();
+        var before = document.getElementById(morph.start);
+        var after = document.getElementById(morph.end);
+
+        if (outerToo) {
+          range.setStartBefore(before);
+          range.setEndAfter(after);
+        } else {
+          range.setStartAfter(before);
+          range.setEndBefore(after);
+        }
+
+        return range;
+      };
+
+      htmlFunc = function(html, outerToo) {
+        // get a range for the current metamorph object
+        var range = rangeFor(this, outerToo);
+
+        // delete the contents of the range, which will be the
+        // nodes between the starting and ending placeholder.
+        range.deleteContents();
+
+        // create a new document fragment for the HTML
+        var fragment = range.createContextualFragment(html);
+
+        // insert the fragment into the range
+        range.insertNode(fragment);
+      };
+
+      removeFunc = function() {
+        // get a range for the current metamorph object including
+        // the starting and ending placeholders.
+        var range = rangeFor(this, true);
+
+        // delete the entire range.
+        range.deleteContents();
+      };
+
+      appendToFunc = function(node) {
+        var range = document.createRange();
+        range.setStart(node);
+        range.collapse(false);
+        var frag = range.createContextualFragment(this.outerHTML());
+        node.appendChild(frag);
+      };
+
+      afterFunc = function(html) {
+        var range = document.createRange();
+        var after = document.getElementById(this.end);
+
+        range.setStartAfter(after);
+        range.setEndAfter(after);
+
+        var fragment = range.createContextualFragment(html);
+        range.insertNode(fragment);
+      };
+
+      prependFunc = function(html) {
+        var range = document.createRange();
+        var start = document.getElementById(this.start);
+
+        range.setStartAfter(start);
+        range.setEndAfter(start);
+
+        var fragment = range.createContextualFragment(html);
+        range.insertNode(fragment);
+      };
+
+    } else {
+      /**
+       * This code is mostly taken from jQuery, with one exception. In jQuery's case, we
+       * have some HTML and we need to figure out how to convert it into some nodes.
+       *
+       * In this case, jQuery needs to scan the HTML looking for an opening tag and use
+       * that as the key for the wrap map. In our case, we know the parent node, and
+       * can use its type as the key for the wrap map.
+       **/
+      var wrapMap = {
+        select: [ 1, "<select multiple='multiple'>", "</select>" ],
+        fieldset: [ 1, "<fieldset>", "</fieldset>" ],
+        table: [ 1, "<table>", "</table>" ],
+        tbody: [ 2, "<table><tbody>", "</tbody></table>" ],
+        tr: [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ],
+        colgroup: [ 2, "<table><tbody></tbody><colgroup>", "</colgroup></table>" ],
+        map: [ 1, "<map>", "</map>" ],
+        _default: [ 0, "", "" ]
+      };
+
+      var findChildById = function(element, id) {
+        if (element.getAttribute('id') === id) { return element; }
+
+        var len = element.childNodes.length, idx, node, found;
+        for (idx=0; idx<len; idx++) {
+          node = element.childNodes[idx];
+          found = node.nodeType === 1 && findChildById(node, id);
+          if (found) { return found; }
+        }
+      };
+
+      var setInnerHTML = function(element, html) {
+        var matches = [];
+        if (movesWhitespace) {
+          // Right now we only check for script tags with ids with the
+          // goal of targeting morphs.
+          html = html.replace(/(\s+)(<script id='([^']+)')/g, function(match, spaces, tag, id) {
+            matches.push([id, spaces]);
+            return tag;
+          });
+        }
+
+        element.innerHTML = html;
+
+        // If we have to do any whitespace adjustments do them now
+        if (matches.length > 0) {
+          var len = matches.length, idx;
+          for (idx=0; idx<len; idx++) {
+            var script = findChildById(element, matches[idx][0]),
+                node = document.createTextNode(matches[idx][1]);
+            script.parentNode.insertBefore(node, script);
+          }
+        }
+      };
+
+      /**
+       * Given a parent node and some HTML, generate a set of nodes. Return the first
+       * node, which will allow us to traverse the rest using nextSibling.
+       *
+       * We need to do this because innerHTML in IE does not really parse the nodes.
+       **/
+      var firstNodeFor = function(parentNode, html) {
+        var arr = wrapMap[parentNode.tagName.toLowerCase()] || wrapMap._default;
+        var depth = arr[0], start = arr[1], end = arr[2];
+
+        if (needsShy) { html = '&shy;'+html; }
+
+        var element = document.createElement('div');
+
+        setInnerHTML(element, start + html + end);
+
+        for (var i=0; i<=depth; i++) {
+          element = element.firstChild;
+        }
+
+        // Look for &shy; to remove it.
+        if (needsShy) {
+          var shyElement = element;
+
+          // Sometimes we get nameless elements with the shy inside
+          while (shyElement.nodeType === 1 && !shyElement.nodeName) {
+            shyElement = shyElement.firstChild;
+          }
+
+          // At this point it's the actual unicode character.
+          if (shyElement.nodeType === 3 && shyElement.nodeValue.charAt(0) === "\u00AD") {
+            shyElement.nodeValue = shyElement.nodeValue.slice(1);
+          }
+        }
+
+        return element;
+      };
+
+      /**
+       * In some cases, Internet Explorer can create an anonymous node in
+       * the hierarchy with no tagName. You can create this scenario via:
+       *
+       *     div = document.createElement("div");
+       *     div.innerHTML = "<table>&shy<script></script><tr><td>hi</td></tr></table>";
+       *     div.firstChild.firstChild.tagName //=> ""
+       *
+       * If our script markers are inside such a node, we need to find that
+       * node and use *it* as the marker.
+       **/
+      var realNode = function(start) {
+        while (start.parentNode.tagName === "") {
+          start = start.parentNode;
+        }
+
+        return start;
+      };
+
+      /**
+       * When automatically adding a tbody, Internet Explorer inserts the
+       * tbody immediately before the first <tr>. Other browsers create it
+       * before the first node, no matter what.
+       *
+       * This means the the following code:
+       *
+       *     div = document.createElement("div");
+       *     div.innerHTML = "<table><script id='first'></script><tr><td>hi</td></tr><script id='last'></script></table>
+       *
+       * Generates the following DOM in IE:
+       *
+       *     + div
+       *       + table
+       *         - script id='first'
+       *         + tbody
+       *           + tr
+       *             + td
+       *               - "hi"
+       *           - script id='last'
+       *
+       * Which means that the two script tags, even though they were
+       * inserted at the same point in the hierarchy in the original
+       * HTML, now have different parents.
+       *
+       * This code reparents the first script tag by making it the tbody's
+       * first child.
+       **/
+      var fixParentage = function(start, end) {
+        if (start.parentNode !== end.parentNode) {
+          end.parentNode.insertBefore(start, end.parentNode.firstChild);
+        }
+      };
+
+      htmlFunc = function(html, outerToo) {
+        // get the real starting node. see realNode for details.
+        var start = realNode(document.getElementById(this.start));
+        var end = document.getElementById(this.end);
+        var parentNode = end.parentNode;
+        var node, nextSibling, last;
+
+        // make sure that the start and end nodes share the same
+        // parent. If not, fix it.
+        fixParentage(start, end);
+
+        // remove all of the nodes after the starting placeholder and
+        // before the ending placeholder.
+        node = start.nextSibling;
+        while (node) {
+          nextSibling = node.nextSibling;
+          last = node === end;
+
+          // if this is the last node, and we want to remove it as well,
+          // set the `end` node to the next sibling. This is because
+          // for the rest of the function, we insert the new nodes
+          // before the end (note that insertBefore(node, null) is
+          // the same as appendChild(node)).
+          //
+          // if we do not want to remove it, just break.
+          if (last) {
+            if (outerToo) { end = node.nextSibling; } else { break; }
+          }
+
+          node.parentNode.removeChild(node);
+
+          // if this is the last node and we didn't break before
+          // (because we wanted to remove the outer nodes), break
+          // now.
+          if (last) { break; }
+
+          node = nextSibling;
+        }
+
+        // get the first node for the HTML string, even in cases like
+        // tables and lists where a simple innerHTML on a div would
+        // swallow some of the content.
+        node = firstNodeFor(start.parentNode, html);
+
+        // copy the nodes for the HTML between the starting and ending
+        // placeholder.
+        while (node) {
+          nextSibling = node.nextSibling;
+          parentNode.insertBefore(node, end);
+          node = nextSibling;
+        }
+      };
+
+      // remove the nodes in the DOM representing this metamorph.
+      //
+      // this includes the starting and ending placeholders.
+      removeFunc = function() {
+        var start = realNode(document.getElementById(this.start));
+        var end = document.getElementById(this.end);
+
+        this.html('');
+        start.parentNode.removeChild(start);
+        end.parentNode.removeChild(end);
+      };
+
+      appendToFunc = function(parentNode) {
+        var node = firstNodeFor(parentNode, this.outerHTML());
+        var nextSibling;
+
+        while (node) {
+          nextSibling = node.nextSibling;
+          parentNode.appendChild(node);
+          node = nextSibling;
+        }
+      };
+
+      afterFunc = function(html) {
+        // get the real starting node. see realNode for details.
+        var end = document.getElementById(this.end);
+        var insertBefore = end.nextSibling;
+        var parentNode = end.parentNode;
+        var nextSibling;
+        var node;
+
+        // get the first node for the HTML string, even in cases like
+        // tables and lists where a simple innerHTML on a div would
+        // swallow some of the content.
+        node = firstNodeFor(parentNode, html);
+
+        // copy the nodes for the HTML between the starting and ending
+        // placeholder.
+        while (node) {
+          nextSibling = node.nextSibling;
+          parentNode.insertBefore(node, insertBefore);
+          node = nextSibling;
+        }
+      };
+
+      prependFunc = function(html) {
+        var start = document.getElementById(this.start);
+        var parentNode = start.parentNode;
+        var nextSibling;
+        var node;
+
+        node = firstNodeFor(parentNode, html);
+        var insertBefore = start.nextSibling;
+
+        while (node) {
+          nextSibling = node.nextSibling;
+          parentNode.insertBefore(node, insertBefore);
+          node = nextSibling;
+        }
+      };
+    }
+
+    Metamorph.prototype.html = function(html) {
+      this.checkRemoved();
+      if (html === undefined) { return this.innerHTML; }
+
+      htmlFunc.call(this, html);
+
+      this.innerHTML = html;
+    };
+
+    Metamorph.prototype.replaceWith = function(html) {
+      this.checkRemoved();
+      htmlFunc.call(this, html, true);
+    };
+
+    Metamorph.prototype.remove = removeFunc;
+    Metamorph.prototype.outerHTML = outerHTMLFunc;
+    Metamorph.prototype.appendTo = appendToFunc;
+    Metamorph.prototype.after = afterFunc;
+    Metamorph.prototype.prepend = prependFunc;
+    Metamorph.prototype.startTag = startTagFunc;
+    Metamorph.prototype.endTag = endTagFunc;
+
+    Metamorph.prototype.isRemoved = function() {
+      var before = document.getElementById(this.start);
       var after = document.getElementById(this.end);
 
-      range.setStartAfter(after);
-      range.setEndAfter(after);
-
-      var fragment = range.createContextualFragment(html);
-      range.insertNode(fragment);
+      return !before || !after;
     };
 
-    prependFunc = function(html) {
-      var range = document.createRange();
-      var start = document.getElementById(this.start);
-
-      range.setStartAfter(start);
-      range.setEndAfter(start);
-
-      var fragment = range.createContextualFragment(html);
-      range.insertNode(fragment);
-    };
-
-  } else {
-    /**
-     * This code is mostly taken from jQuery, with one exception. In jQuery's case, we
-     * have some HTML and we need to figure out how to convert it into some nodes.
-     *
-     * In this case, jQuery needs to scan the HTML looking for an opening tag and use
-     * that as the key for the wrap map. In our case, we know the parent node, and
-     * can use its type as the key for the wrap map.
-     **/
-    var wrapMap = {
-      select: [ 1, "<select multiple='multiple'>", "</select>" ],
-      fieldset: [ 1, "<fieldset>", "</fieldset>" ],
-      table: [ 1, "<table>", "</table>" ],
-      tbody: [ 2, "<table><tbody>", "</tbody></table>" ],
-      tr: [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ],
-      colgroup: [ 2, "<table><tbody></tbody><colgroup>", "</colgroup></table>" ],
-      map: [ 1, "<map>", "</map>" ],
-      _default: [ 0, "", "" ]
-    };
-
-    var findChildById = function(element, id) {
-      if (element.getAttribute('id') === id) { return element; }
-
-      var len = element.childNodes.length, idx, node, found;
-      for (idx=0; idx<len; idx++) {
-        node = element.childNodes[idx];
-        found = node.nodeType === 1 && findChildById(node, id);
-        if (found) { return found; }
+    Metamorph.prototype.checkRemoved = function() {
+      if (this.isRemoved()) {
+        throw new Error("Cannot perform operations on a Metamorph that is not in the DOM.");
       }
     };
 
-    var setInnerHTML = function(element, html) {
-      var matches = [];
-      if (movesWhitespace) {
-        // Right now we only check for script tags with ids with the
-        // goal of targeting morphs.
-        html = html.replace(/(\s+)(<script id='([^']+)')/g, function(match, spaces, tag, id) {
-          matches.push([id, spaces]);
-          return tag;
-        });
-      }
-
-      element.innerHTML = html;
-
-      // If we have to do any whitespace adjustments do them now
-      if (matches.length > 0) {
-        var len = matches.length, idx;
-        for (idx=0; idx<len; idx++) {
-          var script = findChildById(element, matches[idx][0]),
-              node = document.createTextNode(matches[idx][1]);
-          script.parentNode.insertBefore(node, script);
-        }
-      }
-    };
-
-    /**
-     * Given a parent node and some HTML, generate a set of nodes. Return the first
-     * node, which will allow us to traverse the rest using nextSibling.
-     *
-     * We need to do this because innerHTML in IE does not really parse the nodes.
-     **/
-    var firstNodeFor = function(parentNode, html) {
-      var arr = wrapMap[parentNode.tagName.toLowerCase()] || wrapMap._default;
-      var depth = arr[0], start = arr[1], end = arr[2];
-
-      if (needsShy) { html = '&shy;'+html; }
-
-      var element = document.createElement('div');
-
-      setInnerHTML(element, start + html + end);
-
-      for (var i=0; i<=depth; i++) {
-        element = element.firstChild;
-      }
-
-      // Look for &shy; to remove it.
-      if (needsShy) {
-        var shyElement = element;
-
-        // Sometimes we get nameless elements with the shy inside
-        while (shyElement.nodeType === 1 && !shyElement.nodeName) {
-          shyElement = shyElement.firstChild;
-        }
-
-        // At this point it's the actual unicode character.
-        if (shyElement.nodeType === 3 && shyElement.nodeValue.charAt(0) === "\u00AD") {
-          shyElement.nodeValue = shyElement.nodeValue.slice(1);
-        }
-      }
-
-      return element;
-    };
-
-    /**
-     * In some cases, Internet Explorer can create an anonymous node in
-     * the hierarchy with no tagName. You can create this scenario via:
-     *
-     *     div = document.createElement("div");
-     *     div.innerHTML = "<table>&shy<script></script><tr><td>hi</td></tr></table>";
-     *     div.firstChild.firstChild.tagName //=> ""
-     *
-     * If our script markers are inside such a node, we need to find that
-     * node and use *it* as the marker.
-     **/
-    var realNode = function(start) {
-      while (start.parentNode.tagName === "") {
-        start = start.parentNode;
-      }
-
-      return start;
-    };
-
-    /**
-     * When automatically adding a tbody, Internet Explorer inserts the
-     * tbody immediately before the first <tr>. Other browsers create it
-     * before the first node, no matter what.
-     *
-     * This means the the following code:
-     *
-     *     div = document.createElement("div");
-     *     div.innerHTML = "<table><script id='first'></script><tr><td>hi</td></tr><script id='last'></script></table>
-     *
-     * Generates the following DOM in IE:
-     *
-     *     + div
-     *       + table
-     *         - script id='first'
-     *         + tbody
-     *           + tr
-     *             + td
-     *               - "hi"
-     *           - script id='last'
-     *
-     * Which means that the two script tags, even though they were
-     * inserted at the same point in the hierarchy in the original
-     * HTML, now have different parents.
-     *
-     * This code reparents the first script tag by making it the tbody's
-     * first child.
-     **/
-    var fixParentage = function(start, end) {
-      if (start.parentNode !== end.parentNode) {
-        end.parentNode.insertBefore(start, end.parentNode.firstChild);
-      }
-    };
-
-    htmlFunc = function(html, outerToo) {
-      // get the real starting node. see realNode for details.
-      var start = realNode(document.getElementById(this.start));
-      var end = document.getElementById(this.end);
-      var parentNode = end.parentNode;
-      var node, nextSibling, last;
-
-      // make sure that the start and end nodes share the same
-      // parent. If not, fix it.
-      fixParentage(start, end);
-
-      // remove all of the nodes after the starting placeholder and
-      // before the ending placeholder.
-      node = start.nextSibling;
-      while (node) {
-        nextSibling = node.nextSibling;
-        last = node === end;
-
-        // if this is the last node, and we want to remove it as well,
-        // set the `end` node to the next sibling. This is because
-        // for the rest of the function, we insert the new nodes
-        // before the end (note that insertBefore(node, null) is
-        // the same as appendChild(node)).
-        //
-        // if we do not want to remove it, just break.
-        if (last) {
-          if (outerToo) { end = node.nextSibling; } else { break; }
-        }
-
-        node.parentNode.removeChild(node);
-
-        // if this is the last node and we didn't break before
-        // (because we wanted to remove the outer nodes), break
-        // now.
-        if (last) { break; }
-
-        node = nextSibling;
-      }
-
-      // get the first node for the HTML string, even in cases like
-      // tables and lists where a simple innerHTML on a div would
-      // swallow some of the content.
-      node = firstNodeFor(start.parentNode, html);
-
-      // copy the nodes for the HTML between the starting and ending
-      // placeholder.
-      while (node) {
-        nextSibling = node.nextSibling;
-        parentNode.insertBefore(node, end);
-        node = nextSibling;
-      }
-    };
-
-    // remove the nodes in the DOM representing this metamorph.
-    //
-    // this includes the starting and ending placeholders.
-    removeFunc = function() {
-      var start = realNode(document.getElementById(this.start));
-      var end = document.getElementById(this.end);
-
-      this.html('');
-      start.parentNode.removeChild(start);
-      end.parentNode.removeChild(end);
-    };
-
-    appendToFunc = function(parentNode) {
-      var node = firstNodeFor(parentNode, this.outerHTML());
-
-      while (node) {
-        nextSibling = node.nextSibling;
-        parentNode.appendChild(node);
-        node = nextSibling;
-      }
-    };
-
-    afterFunc = function(html) {
-      // get the real starting node. see realNode for details.
-      var end = document.getElementById(this.end);
-      var insertBefore = end.nextSibling;
-      var parentNode = end.parentNode;
-      var nextSibling;
-      var node;
-
-      // get the first node for the HTML string, even in cases like
-      // tables and lists where a simple innerHTML on a div would
-      // swallow some of the content.
-      node = firstNodeFor(parentNode, html);
-
-      // copy the nodes for the HTML between the starting and ending
-      // placeholder.
-      while (node) {
-        nextSibling = node.nextSibling;
-        parentNode.insertBefore(node, insertBefore);
-        node = nextSibling;
-      }
-    };
-
-    prependFunc = function(html) {
-      var start = document.getElementById(this.start);
-      var parentNode = start.parentNode;
-      var nextSibling;
-      var node;
-
-      node = firstNodeFor(parentNode, html);
-      var insertBefore = start.nextSibling;
-
-      while (node) {
-        nextSibling = node.nextSibling;
-        parentNode.insertBefore(node, insertBefore);
-        node = nextSibling;
-      }
-    }
-  }
-
-  Metamorph.prototype.html = function(html) {
-    this.checkRemoved();
-    if (html === undefined) { return this.innerHTML; }
-
-    htmlFunc.call(this, html);
-
-    this.innerHTML = html;
-  };
-
-  Metamorph.prototype.replaceWith = function(html) {
-    this.checkRemoved();
-    htmlFunc.call(this, html, true);
-  };
-
-  Metamorph.prototype.remove = removeFunc;
-  Metamorph.prototype.outerHTML = outerHTMLFunc;
-  Metamorph.prototype.appendTo = appendToFunc;
-  Metamorph.prototype.after = afterFunc;
-  Metamorph.prototype.prepend = prependFunc;
-  Metamorph.prototype.startTag = startTagFunc;
-  Metamorph.prototype.endTag = endTagFunc;
-
-  Metamorph.prototype.isRemoved = function() {
-    var before = document.getElementById(this.start);
-    var after = document.getElementById(this.end);
-
-    return !before || !after;
-  };
-
-  Metamorph.prototype.checkRemoved = function() {
-    if (this.isRemoved()) {
-      throw new Error("Cannot perform operations on a Metamorph that is not in the DOM.");
-    }
-  };
-
-  return Metamorph;
-});
-
+    return Metamorph;
+  });
 
 })();
 
@@ -19905,6 +19920,9 @@ Ember.TextSupport = Ember.Mixin.create({
     this._super();
     this.on("focusOut", this, this._elementValueDidChange);
     this.on("change", this, this._elementValueDidChange);
+    this.on("paste", this, this._elementValueDidChange);
+    this.on("cut", this, this._elementValueDidChange);
+    this.on("input", this, this._elementValueDidChange);
     this.on("keyUp", this, this.interpretKeyEvents);
   },
 
@@ -20011,7 +20029,31 @@ Ember.TextField = Ember.View.extend(Ember.TextSupport,
     @type String
     @default null
   */
-  size: null
+  size: null,
+
+  /**
+    The action to be sent when the user presses the return key.
+
+    This is similar to the `{{action}}` helper, but is fired when
+    the user presses the return key when editing a text field, and sends
+    the value of the field as the context.
+
+   @property action
+   @type String
+   @default null
+  */
+  action: null,
+
+  insertNewline: function() {
+    var controller = get(this, 'controller'),
+        action = get(this, 'action');
+
+    if (action) {
+      controller.send(action, get(this, 'value'));
+    }
+
+    return false;
+  }
 });
 
 })();
@@ -21927,6 +21969,86 @@ define("router",
 
 
 (function() {
+function DSL(name) {
+  this.parent = name;
+  this.matches = [];
+}
+
+DSL.prototype = {
+  resource: function(name, options, callback) {
+    if (arguments.length === 2 && typeof options === 'function') {
+      callback = options;
+      options = {};
+    }
+
+    if (arguments.length === 1) {
+      options = {};
+    }
+
+    if (typeof options.path !== 'string') {
+      options.path = "/" + name;
+    }
+
+    if (callback) {
+      var dsl = new DSL(name);
+      callback.call(dsl);
+      this.push(options.path, name, dsl.generate());
+    } else {
+      this.push(options.path, name);
+    }
+  },
+
+  push: function(url, name, callback) {
+    if (url === "" || url === "/") { this.explicitIndex = true; }
+
+    this.matches.push([url, name, callback]);
+  },
+
+  route: function(name, options) {
+    Ember.assert("You must use `this.resource` to nest", typeof options !== 'function');
+
+    options = options || {};
+
+    if (typeof options.path !== 'string') {
+      options.path = "/" + name;
+    }
+
+    if (this.parent && this.parent !== 'application') {
+      name = this.parent + "." + name;
+    }
+
+    this.push(options.path, name);
+  },
+
+  generate: function() {
+    var dslMatches = this.matches;
+
+    if (!this.explicitIndex) {
+      this.route("index", { path: "/" });
+    }
+
+    return function(match) {
+      for (var i=0, l=dslMatches.length; i<l; i++) {
+        var dslMatch = dslMatches[i];
+        match(dslMatch[0]).to(dslMatch[1], dslMatch[2]);
+      }
+    };
+  }
+};
+
+DSL.map = function(callback) {
+  var dsl = new DSL();
+  callback.call(dsl);
+  return dsl;
+};
+
+Ember.RouterDSL = DSL;
+
+})();
+
+
+
+(function() {
 Ember.controllerFor = function(container, controllerName, context) {
   return container.lookup('controller:' + controllerName) ||
          Ember.generateController(container, controllerName, context);
@@ -21936,9 +22058,13 @@ Ember.generateController = function(container, controllerName, context) {
   var controller;
 
   if (context && Ember.isArray(context)) {
-    controller = Ember.ArrayController.extend({content: context});
+    controller = Ember.ArrayController.extend({
+      content: context
+    });
   } else if (context) {
-    controller = Ember.ObjectController.extend({content: context});
+    controller = Ember.ObjectController.extend({
+      content: context
+    });
   } else {
     controller = Ember.Controller.extend();
   }
@@ -21960,7 +22086,6 @@ var Router = requireModule("router");
 var get = Ember.get, set = Ember.set, classify = Ember.String.classify;
 
 var DefaultView = Ember.View.extend(Ember._Metamorph);
-
 function setupLocation(router) {
   var location = get(router, 'location'),
       rootURL = get(router, 'rootURL');
@@ -21986,7 +22111,7 @@ Ember.Router = Ember.Object.extend({
   },
 
   startRouting: function() {
-    this.router = this.router || this.constructor.map();
+    this.router = this.router || this.constructor.map(Ember.K);
 
     var router = this.router,
         location = get(this, 'location'),
@@ -22009,6 +22134,7 @@ Ember.Router = Ember.Object.extend({
         path = routePath(infos);
 
     set(appController, 'currentPath', path);
+    this.notifyPropertyChange('url');
 
     if (get(this, 'namespace').LOG_TRANSITIONS) {
       Ember.Logger.log("Transitioned into '" + path + "'");
@@ -22172,36 +22298,17 @@ function setupRouter(emberRouter, router, location) {
   };
 }
 
-function setupRouterDelegate(router, namespace) {
-  router.delegate = {
-    willAddRoute: function(context, handler) {
-      if (!context) { return handler; }
-
-      if (context === 'application' || context === undefined) {
-        return handler;
-      } else if (handler.indexOf('.') === -1) {
-        context = context.split('.').slice(-1)[0];
-        return context + '.' + handler;
-      } else {
-        return handler;
-      }
-    },
-
-    contextEntered: function(target, match) {
-      match('/').to('index');
-    }
-  };
-}
-
-var emptyMatcherCallback = function(match) { };
-
 Ember.Router.reopenClass({
   map: function(callback) {
     var router = this.router = new Router();
-    setupRouterDelegate(router, this.namespace);
-    router.map(function(match) {
-      match("/").to("application", callback || emptyMatcherCallback);
+
+    var dsl = Ember.RouterDSL.map(function() {
+      this.resource('application', { path: "/" }, function() {
+        callback.call(this);
+      });
     });
+
+    router.map(dsl.generate());
     return router;
   }
 });
@@ -22260,12 +22367,17 @@ Ember.Route = Ember.Object.extend({
     @method setup
   */
   setup: function(context) {
+    this.currentModel = context;
     this.transitioned = false;
     this.redirect(context);
 
     if (this.transitioned) { return; }
 
     var controller = this.controllerFor(this.templateName, context);
+
+    if (controller) {
+      set(controller, 'model', context);
+    }
 
     if (this.setupControllers) {
       Ember.deprecate("Ember.Route.setupControllers is deprecated. Please use Ember.Route.setupController(controller, model) instead.");
@@ -22420,11 +22532,7 @@ Ember.Route = Ember.Object.extend({
 
     @method setupController
   */
-  setupController: function(controller, model) {
-    if (controller) {
-      controller.set('content', model);
-    }
-  },
+  setupController: Ember.K,
 
   /**
     Returns the controller for a particular route.
@@ -22547,7 +22655,7 @@ Ember.Route = Ember.Object.extend({
       name = this.templateName;
     }
 
-    name = name || this.templateName;
+    name = name ? name.replace(/\//g, '.') : this.templateName;
 
     var container = this.container,
         view = container.lookup('view:' + name),
@@ -22590,7 +22698,7 @@ function parentTemplate(route) {
 
 function normalizeOptions(route, name, template, options) {
   options = options || {};
-  options.into = options.into || parentTemplate(route);
+  options.into = options.into ? options.into.replace(/\//g, '.') : parentTemplate(route);
   options.outlet = options.outlet || 'main';
   options.name = name;
   options.template = template;
@@ -22611,7 +22719,10 @@ function setupView(view, container, options) {
 
   view = view || container.lookup(defaultView);
 
-  set(view, 'template', options.template);
+  if (!get(view, 'templateName')) {
+    set(view, 'template', options.template);
+  }
+
   set(view, 'renderedName', options.name);
   set(view, 'controller', options.controller);
 
@@ -22713,6 +22824,9 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
     click: function(event) {
       if (!isSimpleClick(event)) { return true; }
 
+      event.preventDefault();
+      if (this.bubbles === false) { event.stopPropagation(); }
+
       var router = this.get('router');
 
       if (this.get('replace')) {
@@ -22720,8 +22834,6 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
       } else {
         router.transitionTo.apply(router, args(this, router));
       }
-
-      return false;
     },
 
     href: Ember.computed(function() {
@@ -22885,6 +22997,7 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
       context = Ember.Handlebars.get(options.contexts[1], context, options);
     }
 
+    name = name.replace(/\//g, '.');
     container = options.data.keywords.controller.container;
     router = container.lookup('router:main');
 
@@ -22904,7 +23017,7 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
 
     controller.set('target', options.data.keywords.controller);
 
-    options.hash.viewName = name;
+    options.hash.viewName = Ember.String.camelize(name);
     options.hash.template = container.lookup('template:' + name);
     options.hash.controller = controller;
 
@@ -25731,8 +25844,8 @@ Ember States
 
 
 })();
-// Version: v1.0.0-pre.2-378-g2e2b4ec
-// Last commit: 2e2b4ec (2013-01-12 15:56:53 -0800)
+// Version: v1.0.0-pre.2-408-g43354a9
+// Last commit: 43354a9 (2013-01-15 18:12:34 -0800)
 
 
 (function() {
@@ -25743,4 +25856,3 @@ Ember
 */
 
 })();
-

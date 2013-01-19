@@ -1,4 +1,4 @@
-Gsc.SiteSalesSiteSaleRoute = Em.Route.extend({
+Gsc.SiteSalesShowRoute = Em.Route.extend({
   exit: function() {
     this._super();
     this.controllerFor('siteSales').set('activeContactId', null);

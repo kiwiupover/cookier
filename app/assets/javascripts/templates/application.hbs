@@ -1,4 +1,3 @@
-
 <div class="top-bar container">
   <ul>
     <!-- Title Area -->
@@ -19,7 +18,7 @@
       <li class="divider"></li>
       <li>{{#linkTo participants participants}}Participants{{/linkTo}}</li>
       <li class="divider"></li>
-      <li>{{#linkTo cookiesCases cookieCases}}Cookies{{/linkTo}}</li>
+      <li>{{#linkTo cookieCases cookieCases}}Cookies{{/linkTo}}</li>
 
       <li class="divider hide-for-small"></li>
     </ul>
@@ -31,14 +30,18 @@
 
 <div class="container">
   <div class="row">
-    {{outlet}}
+    <div class="twelve columns">
+      {{outlet}}
+    </div>
   </div>
   <div class="row">
-    <ul class="inline-list">
-      <li><a href="/">Home</a></li>
-      <li>{{#linkTo siteSales siteSales}}Site Sales{{/linkTo}}</li>
-      <li>{{#linkTo participants participants}}Participants{{/linkTo}}</li>
-      <li>{{#linkTo cookieCases cookieCases}}Cookies{{/linkTo}}</li>
-    </ul>
+    <div class="twelve columns">
+      <ul class="inline-list">
+        <li><a href="/">Home</a></li>
+        <li>{{#linkTo siteSales siteSales}}Site Sales{{/linkTo}}</li>
+        <li>{{#linkTo participants participants}}Participants{{/linkTo}}</li>
+        <li>{{#linkTo cookieCases cookieCases}}Cookies{{/linkTo}}</li>
+      </ul>
+    </div>
   </div>
 </div>
