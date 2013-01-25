@@ -4,6 +4,7 @@ Gsc.Participant = DS.Model.extend({
   email: DS.attr('string'),
   phone: DS.attr('string'),
   parent: DS.attr('boolean'),
+  cookieCase: DS.belongsTo('Gsc.CookieCase'),
 
   fullName: function() {
     var firstName = this.get('firstName'),
@@ -11,7 +12,7 @@ Gsc.Participant = DS.Model.extend({
 
     if (!firstName && !lastName) {
       if (this.get('id') === undefined) {
-        return '(New Contact)';
+        return '(New Participant)';
       } else {
         return '(No Name)';
       }

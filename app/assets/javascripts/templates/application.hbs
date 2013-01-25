@@ -1,4 +1,3 @@
-
 <div class="top-bar container">
   <ul>
     <!-- Title Area -->
@@ -15,12 +14,11 @@
     <!-- Left Nav Section -->
     <ul class="left">
       <li class="divider"></li>
-      <li>
-        <a class="active" href="#">Site Sales</a>
-      </li>
-      <li>
-        <a class="active" href="#">Girls</a>
-      </li>
+      <li>{{#linkTo siteSales }}Site Sales{{/linkTo}}</li>
+      <li class="divider"></li>
+      <li>{{#linkTo participants }}Participants{{/linkTo}}</li>
+      <li class="divider"></li>
+      <li>{{#linkTo cookieCases }}Cookies{{/linkTo}}</li>
 
       <li class="divider hide-for-small"></li>
     </ul>
@@ -32,13 +30,18 @@
 
 <div class="container">
   <div class="row">
-    {{outlet}}
+    <div class="twelve columns">
+      {{outlet}}
+    </div>
   </div>
   <div class="row">
-    <ul class="inline-list">
-      <li><a {{action goToCookies href=true}}>Cookies</a></li>
-      <li><a {{action goToParticipants href=true}}>Participants</a></li>
-      <li><a {{action goToHome href=true}}>Home Page</a></li>
-    </ul>
+    <div class="twelve columns">
+      <ul class="inline-list">
+        <li><a href="/">Home</a></li>
+        <li>{{#linkTo siteSales }}Site Sales{{/linkTo}}</li>
+        <li>{{#linkTo participants }}Participants{{/linkTo}}</li>
+        <li>{{#linkTo cookieCases }}Cookies{{/linkTo}}</li>
+      </ul>
+    </div>
   </div>
 </div>

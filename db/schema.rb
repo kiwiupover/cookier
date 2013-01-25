@@ -11,14 +11,45 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121222203213) do
+ActiveRecord::Schema.define(:version => 20121229004608) do
+
+  create_table "cookie_cases", :force => true do |t|
+    t.string   "name"
+    t.string   "quantity"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.integer  "site_sale_id"
+  end
+
+  create_table "cookie_counts", :force => true do |t|
+    t.integer  "cookie_id"
+    t.string   "quantity"
+    t.integer  "site_sale_id"
+    t.string   "type"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "cookie_stores", :force => true do |t|
+    t.string   "name"
+    t.date     "date"
+    t.integer  "cookie_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "cookies", :force => true do |t|
     t.string   "name"
     t.string   "boxes"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.integer  "person_id"
+    t.integer  "site_sale_id"
+  end
+
+  create_table "inventories", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.integer  "person_id"
   end
 
   create_table "participants", :force => true do |t|
@@ -36,6 +67,25 @@ ActiveRecord::Schema.define(:version => 20121222203213) do
     t.boolean  "parent"
     t.string   "phone"
     t.string   "email"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "site_end_counts", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "site_sales", :force => true do |t|
+    t.string   "location"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "cookie_id"
+  end
+
+  create_table "site_start_counts", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

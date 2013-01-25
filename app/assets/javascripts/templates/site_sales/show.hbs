@@ -1,0 +1,16 @@
+<h2>{{location}}</h2>
+<p>{{startAt}}</p>
+
+<h3>Cookies</h3>
+<ul class="no-bullet">
+  {{#each cookieCases}}
+    <li>
+      <strong>{{name}}</strong> {{quantity}}
+    </li>
+  {{/each}}
+</ul>
+
+{{#linkTo siteSales.edit content class="button radius"}}Edit{{/linkTo}}
+
+
+{{outlet}}
