@@ -1,23 +1,18 @@
 Gsc.ParticipantsNewController = Ember.ObjectController.extend({
-  enter: function() {
-    console.log("Entering the ParticipantsNewController");
-  },
   update: function() {
     this.store.commit();
-    return this.transitionToRoute('participants.show', this.content);
+    this.content.addObserver('id');
+    this.transitionToRoute('particpants.show', this.content);
+  },
+  afterCreate: function() {
+    this.content.removeObserver('id', this, 'afterCreate');
+    return this.transitionToRoute('particpants.show', this.content);
   },
   cancel: function() {
-    if (this.content.isDirty) {
-      this.content.rollback();
-    }
-    return this.transitionToRoute('participant.show', this.content);
-  },
-  destroy: function() {
     this.content.deleteRecord();
-    this.store.commit();
-    return this.transitionToRoute('participants.index');
+    return this.transitionToRoute('particpants.index');
   },
   buttonTitle: 'Create',
-  headerTitle: 'Createing'
+  headerTitle: 'Creating'
 });
 

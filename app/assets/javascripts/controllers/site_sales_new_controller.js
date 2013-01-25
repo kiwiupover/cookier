@@ -1,17 +1,14 @@
 Gsc.SiteSalesNewController = Ember.ObjectController.extend({
-  update: function() {
+  create: function() {
     this.store.commit();
+    return this.content.addObserver('id', this, 'afterCreate');
+  },
+  afterCreate: function() {
+    this.content.removeObserver('id', this, 'afterCreate');
     return this.transitionToRoute('siteSales.show', this.content);
   },
   cancel: function() {
-    if (this.content.isDirty) {
-      this.content.rollback();
-    }
-    return this.transitionToRoute('siteSales.index', this.content);
-  },
-  destroy: function() {
     this.content.deleteRecord();
-    this.store.commit();
     return this.transitionToRoute('siteSales.index');
   },
   buttonTitle: 'Create',

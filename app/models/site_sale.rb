@@ -1,9 +1,7 @@
 class SiteSale < ActiveRecord::Base
-  attr_accessible :end_at, :location, :start_at
+  attr_accessible :end_at, :location, :start_at, :cookie_cases_attributes
 
   has_many :cookie_cases
 
-  def active_model_serializer
-    SiteSaleSerializer
-  end
+  accepts_nested_attributes_for :cookie_cases
 end

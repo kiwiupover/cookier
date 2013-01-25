@@ -1,23 +1,20 @@
 Gsc.SiteSalesEditController = Ember.ObjectController.extend({
-  enter: function() {
-    console.log("Entering the SiteSalesEditController");
+  destroy: function() {
+    this.content.deleteRecord();
+    this.store.commit();
+    return this.transitionTo('siteSales.index');
   },
   update: function() {
     this.store.commit();
-    return this.transitionToRoute('siteSales.show', this.content);
+    return this.transitionTo('siteSales.show', this.content);
   },
   cancel: function() {
     if (this.content.isDirty) {
       this.content.rollback();
     }
-    return this.transitionToRoute('siteSales.show', this.content);
+    return this.transitionTo('siteSales.show', this.content);
   },
-  destroy: function() {
-    this.content.deleteRecord();
-    this.store.commit();
-    return this.transitionToRoute('siteSales.index');
-  },
-  buttonTitle: 'Update',
-  headerTitle: 'Updating'
+  buttonTitle: 'Edit',
+  headerTitle: 'Editing'
 });
 
