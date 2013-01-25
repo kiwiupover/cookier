@@ -1,5 +1,5 @@
 Gsc.ParticipantInListView = Ember.View.extend({
-  templateName: 'participant_in_list',
+  templateName: 'participants/participant_in_list',
   tagName: 'li',
   classNameBindings: 'isActive:active',
 

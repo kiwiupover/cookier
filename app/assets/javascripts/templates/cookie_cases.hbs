@@ -2,8 +2,8 @@
   <div class="columns four">
     <h3>All Cookies</h3>
     <ul class="no-bullet">
-      {{#each cookieCase in arrangedContent}}
-        {{view Gsc.ListCookieCasesView contentBinding="cookieCase"}}
+      {{#each cookieCase in controller}}
+        <li>{{cookieCase.name}}</li>
       {{/each}}
     </ul>
   </div>
