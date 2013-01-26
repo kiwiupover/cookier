@@ -16,7 +16,8 @@
 //= require lib/ember-data
 //= require lib/moment
 //= require jquery_ujs
-//= require foundation
+//= require jquery.ui.datepicker
+//= require foundation/jquery.foundation.forms
 //= require_self
 //= require gsc
 Gsc = Ember.Application.create({

@@ -1,28 +1,47 @@
-<form {{action save content on="submit"}} class="custom">
-  <h3>{{headerTitle}} {{location}}</h3>
+<div class="row">
+  <div class="twelve columns">
+    <form {{action save content on="submit"}} class="custom">
+      <h3>{{headerTitle}} {{location}}</h3>
+      <div class="row">
+        <div class="twelve columns">
+          <label class="control-label" for="location">Location</label>
+          <div class="controls">
+            {{view Ember.TextField valueBinding="location" id="location" placeholder="Location" required="true"}}
+          </div>
+        </div>
+        <div class="six columns">
+          <label class="control-label" for="startAt">Start Date</label>
+          <div class="controls">
+            {{view Ember.TextField valueBinding="startDate" id="startDate" placeholder="Start Date" required="true"  class="datepicker"}}
+          </div>
+        </div>
+        <div class="tix columns">
+          <label class="control-label" for="startAt">Start Time</label>
+          <div class="controls">
+            {{view Ember.Select
+                contentBinding="Gsc.siteSalesTimes"
+                optionValuePath="content.value"
+                optionLabelPath="content.display"
+                valueBinding="startTime"
+                prompt="Please select a time"
+                class="expand"
+            }}
+          </div>
+        </div>
+      </div>
 
-  <label class="control-label" for="location">Location</label>
-  <div class="controls">
-    {{view Ember.TextField valueBinding="location" id="location" placeholder="Location" required="true"}}
-  </div>
-  <label class="control-label" for="startAt">Start Date and Time</label>
-  <div class="controls">
-    {{view Ember.TextField valueBinding="startAt" id="startAt" placeholder="Start Date and Time" required="true"}}
-  </div>
-  <label class="control-label" for="endAt">End Date and Time</label>
-  <div class="controls">
-    {{view Ember.TextField valueBinding="endAt" id="endAt" placeholder="Endt Date and Time" required="true"}}
-  </div>
+      {{#each cookieCases}}
+        <label class="control-label" for="cookies-{{id}}">{{name}}</label>
+        <div class="controls">
+          {{view Ember.TextField valueBinding="quantity" placeholder="Quantity" required="true"}}
+        </div>
+      {{/each}}
 
-  {{#each cookieCases}}
-    <label class="control-label" for="cookies-{{id}}">{{name}}</label>
-    <div class="controls">
-      {{view Ember.TextField valueBinding="quantity" placeholder="Quantity" required="true"}}
-    </div>
-  {{/each}}
-
-  <div class="form-actions mtm">
-    <a href='#' {{action update target='controller'}} class='button radius'>{{buttonTitle}}</a>
-    <a href='#' {{action cancel target='controller'}} class='mlm'>Cancel</a>
+      <div class="form-actions mtm">
+        <a href='#' {{action update target='controller'}} class='button radius'>{{buttonTitle}}</a>
+        <a href='#' {{action cancel target='controller'}} class='mlm'>Cancel</a>
+      </div>
+    </form>
   </div>
-</form>
+</div>
+

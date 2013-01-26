@@ -1,9 +1,13 @@
 Gsc.SiteSalesNewController = Ember.ObjectController.extend({
 
   update: function() {
+    debugger;
+    var setDate = new Date();
+    setDate = new Date(this.get('startDate') + " " + this.get('startTime'));
+    this.set('startDate', setDate);
+
     var cookieCases = this.get('cookieCases');
     this._createCookiesCases(cookieCases);
-    debugger;
     this.store.commit();
     this.content.addObserver('id', this, 'afterCreate');
   },
@@ -23,13 +27,9 @@ Gsc.SiteSalesNewController = Ember.ObjectController.extend({
           {'name': 'Thin Mint'},
           {'name': 'Samoas'},
           {'name': 'Tagalongs'},
-          {'name': 'Lemonades'},
           {'name': 'Do-si-dos'},
           {'name': 'Savannah Smiles'},
-          {'name': 'Thanks-A-Lot'},
-          {'name': 'Dulce de Leche'},
-          {'name': 'Mango Cremes'},
-          {'name': 'Thank U Berry Munch'}
+          {'name': 'Trefoils'}
         ];
     $(cookieTypes).each(function() {
       cookieCases.createRecord({
