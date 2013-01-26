@@ -1,5 +1,5 @@
 class SiteSale < ActiveRecord::Base
-  attr_accessible :end_at, :location, :start_at, :cookie_cases_attributes
+  attr_accessible :end_at, :location, :start_at, :cookie_cases_attributes, :cookie_cases
 
   has_many :cookie_cases
 

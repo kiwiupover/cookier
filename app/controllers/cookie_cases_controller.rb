@@ -10,4 +10,14 @@ class CookieCasesController < ApplicationController
     render json: cookie_case
   end
 
+  def create
+    @cookie_case =  CookieCase.new(params[:cookie_case])
+    if @cookie_case.save
+      render json: @cookie_case, status: :ok
+    else
+      render json: @cookie_case
+    end
+
+  end
+
 end

@@ -15,12 +15,11 @@
   </div>
 
   {{#each cookieCases}}
-    <label class="control-label" for="cookies1">Cookies</label>
+    <label class="control-label" for="cookies-{{id}}">{{name}}</label>
     <div class="controls">
-      {{view Ember.TextField valueBinding="cookieCase.name" id="cookies1" placeholder="Cookie" required="true"}}
+      {{view Ember.TextField valueBinding="quantity" placeholder="Quantity" required="true"}}
     </div>
   {{/each}}
-
 
   <div class="form-actions mtm">
     <a href='#' {{action update target='controller'}} class='button radius'>{{buttonTitle}}</a>

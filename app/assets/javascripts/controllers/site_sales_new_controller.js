@@ -1,16 +1,41 @@
 Gsc.SiteSalesNewController = Ember.ObjectController.extend({
-  create: function() {
+
+  update: function() {
+    var cookieCases = this.get('cookieCases');
+    this._createCookiesCases(cookieCases);
+    debugger;
     this.store.commit();
-    return this.content.addObserver('id', this, 'afterCreate');
+    this.content.addObserver('id', this, 'afterCreate');
   },
   afterCreate: function() {
     this.content.removeObserver('id', this, 'afterCreate');
-    return this.transitionToRoute('siteSales.show', this.content);
+    this.transitionToRoute('siteSales.show', this.content);
   },
   cancel: function() {
     this.content.deleteRecord();
-    return this.transitionToRoute('siteSales.index');
+    this.transitionToRoute('siteSales.index');
   },
   buttonTitle: 'Create',
-  headerTitle: 'Creating'
+  headerTitle: 'Creating',
+
+  _createCookiesCases: function(cookieCases) {
+    var cookieTypes = [
+          {'name': 'Thin Mint'},
+          {'name': 'Samoas'},
+          {'name': 'Tagalongs'},
+          {'name': 'Lemonades'},
+          {'name': 'Do-si-dos'},
+          {'name': 'Savannah Smiles'},
+          {'name': 'Thanks-A-Lot'},
+          {'name': 'Dulce de Leche'},
+          {'name': 'Mango Cremes'},
+          {'name': 'Thank U Berry Munch'}
+        ];
+    $(cookieTypes).each(function() {
+      cookieCases.createRecord({
+        name: this.name,
+        quantity: 0
+      });
+    });
+  }
 });

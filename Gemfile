@@ -5,7 +5,9 @@ gem 'rails', '3.2.8'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+gem 'pg'
+gem 'heroku'
+# gem 'sqlite3'
 
 gem "active_model_serializers", :git => "git://github.com/rails-api/active_model_serializers.git"
 gem "ember-rails", :git => 'git://github.com/emberjs/ember-rails.git'

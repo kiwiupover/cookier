@@ -14,7 +14,7 @@ Gsc.SiteSalesEditController = Ember.ObjectController.extend({
     }
     return this.transitionTo('siteSales.show', this.content);
   },
-  buttonTitle: 'Edit',
+  buttonTitle: 'Update',
   headerTitle: 'Editing'
 });
 
