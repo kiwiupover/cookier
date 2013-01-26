@@ -11,7 +11,6 @@ class SiteSalesController < ApplicationController
   end
 
   def create
-    binding.pry
     params[:site_sale][:cookie_cases_attributes] = params[:site_sale].delete(:cookie_cases) if params[:site_sale].has_key? :cookie_cases
 
     @site_sale =  SiteSale.new(params[:site_sale])
@@ -20,16 +19,6 @@ class SiteSalesController < ApplicationController
     else
       render json: @site_sale.errors, status: :unprocessable_entity
     end
-    # site_sale = SiteSale.new(params[:site_sale])
-    # site_sale.save
-    # render json: site_sale
-    # site_sale = SiteSale.new(params[:site_sale])
-
-    # if site_sale.save
-    #   render json: site_sale, status: :created, location: site_sale
-    # else
-    #   render json: site_sale.errors, status: :unprocessable_entity
-    # end
   end
 
   def update
