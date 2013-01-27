@@ -10,7 +10,7 @@ Gsc.ParticipantsNewController = Ember.ObjectController.extend({
   },
   cancel: function() {
     this.content.deleteRecord();
-    return this.transitionToRoute('particpants');
+    return this.transitionToRoute('particpants.index');
   },
   buttonTitle: 'Create',
   headerTitle: 'Creating'
