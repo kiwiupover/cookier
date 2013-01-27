@@ -2,7 +2,7 @@ Gsc.ParticipantsEditController = Ember.ObjectController.extend({
   destroy: function() {
     this.content.deleteRecord();
     this.store.commit();
-    return this.transitionTo('participants.index');
+    return this.transitionTo('participants');
   },
   update: function() {
     this.store.commit();
