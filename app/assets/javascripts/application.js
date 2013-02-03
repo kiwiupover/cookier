@@ -11,9 +11,12 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require lib/handlebars
-//= require lib/ember
-//= require lib/ember-data
+// require lib/handlebars
+// require lib/ember
+// require lib/ember-data
+//= require handlebars
+//= require ember
+//= require ember-data
 //= require lib/moment
 //= require jquery_ujs
 //= require jquery.ui.datepicker

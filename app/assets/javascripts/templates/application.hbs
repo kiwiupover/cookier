@@ -4,7 +4,7 @@
     <li class="name">
       <h1>
         {{#linkTo index}}
-          Cookier
+          Thin Minting
         {{/linkTo}}
       </h1>
     </li>
@@ -26,6 +26,13 @@
       <li class="divider show-for-medium-and-up"></li>
     </ul>
     <!-- Right Nav Section -->
+    <ul class="right">
+      <li class="divider show-for-medium-and-up"></li>
+      <li><a href="/users/edit">Edit profile</a></li>
+      <li class="divider"></li>
+      <li><a href="/users/sign_out" data-method="delete" rel="nofollow">Logout</a></li>
+    </ul>
+  </div>
   </section>
 </div>
 
@@ -34,12 +41,6 @@
   <div class="row">
     <div class="twelve columns">
       {{outlet}}
-      {{debugger}}
-      {{#if currentUser.isSignedIn}}
-        Hi, {{currentUser.email}}
-      {{else}}
-        Hello, Guest
-      {{/if}}
     </div>
   </div>
   <div class="row">
