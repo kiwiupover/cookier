@@ -1,6 +1,10 @@
 class AppController < ApplicationController
-  # GET /
+  layout 'devise'
   def index
-    # Use this action to bootstrap your ember app
+
+    if current_user
+      redirect_to controller: :cookies
+    end
   end
+
 end

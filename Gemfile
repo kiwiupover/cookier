@@ -29,6 +29,12 @@ end
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
+gem 'devise'
+
+group :test, :development do
+  gem 'letter_opener'
+end
+
 gem 'thin'
 gem 'puma'
 

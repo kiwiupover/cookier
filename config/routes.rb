@@ -1,9 +1,15 @@
 Gsc::Application.routes.draw do
+  resources :troops
+
+  devise_for :users
+
   resources :cookie_cases
 
   resources :site_sales
 
   resources :participants
+
+  match '/cookies', to: 'cookies#index'
 
   root to: 'app#index'
 

@@ -22,7 +22,9 @@
 
       <li class="divider hide-for-small"></li>
     </ul>
-
+    <ul class="right">
+      <li class="divider show-for-medium-and-up"></li>
+    </ul>
     <!-- Right Nav Section -->
   </section>
 </div>
@@ -32,6 +34,12 @@
   <div class="row">
     <div class="twelve columns">
       {{outlet}}
+      {{debugger}}
+      {{#if currentUser.isSignedIn}}
+        Hi, {{currentUser.email}}
+      {{else}}
+        Hello, Guest
+      {{/if}}
     </div>
   </div>
   <div class="row">

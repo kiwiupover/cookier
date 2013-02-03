@@ -23,4 +23,5 @@
 Gsc = Ember.Application.create({
   LOG_TRANSITIONS: true
 });
+
 //= require_tree .
