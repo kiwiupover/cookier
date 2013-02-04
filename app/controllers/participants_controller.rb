@@ -1,17 +1,18 @@
 class ParticipantsController < ApplicationController
+  before_filter :authenticate_user!
 
   def index
-    participant = Participant.all
+    participant = current_user.participants.all
     render json: participant
   end
 
   def show
-    participant = Participant.find(params[:id])
+    participant = current_user.participants.find(params[:id])
     render json: participant
   end
 
   def create
-    participant = Participant.new(params[:participant])
+    participant = current_user.participants.new(params[:participant])
     if participant.save
       render json: participant, status: :created
     else
@@ -20,7 +21,7 @@ class ParticipantsController < ApplicationController
   end
 
   def update
-    participant = Participant.find(params[:id])
+    participant = current_user.participants.find(params[:id])
 
     if participant.update_attributes(params[:participant])
       render json: participant, status: :ok
@@ -30,7 +31,7 @@ class ParticipantsController < ApplicationController
   end
 
   def destroy
-    participant = Participant.find(params[:id])
+    participant = current_user.participants.find(params[:id])
     participant.destroy
     render json: nil, status: :ok
   end

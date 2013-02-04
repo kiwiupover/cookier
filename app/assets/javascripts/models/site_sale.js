@@ -18,7 +18,7 @@ Gsc.SiteSale = DS.Model.extend({
   siteSaleDate: function() {
     startAtDate =  moment(this.get('startDate'));
     return startAtDate.format('MMM Do');
-  }.property('startDate', 'startTime')
+  }.property('startDate')
 });
 
 Gsc.siteSalesTimes = [

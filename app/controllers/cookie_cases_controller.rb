@@ -1,4 +1,4 @@
-class CookieCasesController < ApplicationController
+  class CookieCasesController < ApplicationController
 
   def index
     cookie_cases = CookieCase.all

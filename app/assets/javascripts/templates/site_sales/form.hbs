@@ -5,17 +5,13 @@
       <div class="row">
         <div class="twelve columns">
           <label class="control-label" for="location">Location</label>
-          <div class="controls">
-            {{view Ember.TextField valueBinding="location" id="location" placeholder="Location" required="true"}}
-          </div>
+          {{view Ember.TextField valueBinding="location" id="location" placeholder="Location" required="true"}}
         </div>
         <div class="six columns">
           <label class="control-label" for="startAt">Start Date</label>
-          <div class="controls">
-            {{view Ember.TextField valueBinding="startDate" id="startDate" placeholder="Start Date" required="true"  class="datepicker"}}
-          </div>
+          {{view Ember.TextField valueBinding="startDate" id="startDate" placeholder="Start Date" required="true" class="datepicker"}}
         </div>
-        <div class="tix columns">
+        <div class="six columns">
           <label class="control-label" for="startAt">Start Time</label>
           <div class="controls">
             {{view Ember.Select
@@ -23,6 +19,8 @@
                 optionValuePath="content.value"
                 optionLabelPath="content.display"
                 valueBinding="startTime"
+                selectionBinding="Gsc.siteSaleEditController.startTime"
+                selected="startTime"
                 prompt="Please select a time"
                 class="expand"
             }}
@@ -32,9 +30,7 @@
 
       {{#each cookieCases}}
         <label class="control-label" for="cookies-{{id}}">{{name}}</label>
-        <div class="controls">
-          {{view Ember.TextField valueBinding="quantity" placeholder="Quantity" required="true"}}
-        </div>
+        {{view Ember.TextField valueBinding="quantity" placeholder="Quantity" required="true"}}
       {{/each}}
 
       <div class="form-actions mtm">
@@ -44,4 +40,3 @@
     </form>
   </div>
 </div>
-
