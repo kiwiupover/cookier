@@ -11,4 +11,6 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
 
   belongs_to :troop
+  has_many :site_sales
+  has_many :participants
 end

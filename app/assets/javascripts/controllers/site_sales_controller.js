@@ -1,3 +1,5 @@
 Gsc.SiteSalesController = Ember.ArrayController.extend({
-  content: []
+  content: [],
+
+   sortProperties: ['startDate', 'startTime']
 });

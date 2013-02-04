@@ -13,6 +13,11 @@ Gsc.SiteSale = DS.Model.extend({
   siteSaleTime: function() {
     startAtDate =  moment(this.get('startDate'));
     return startAtDate.format('dddd, MMM Do') + " at " + startAtDate.format('h:mma') + " to " + startAtDate.add('h', 2).format('h:mma');
+  }.property('startDate', 'startTime'),
+
+  siteSaleDate: function() {
+    startAtDate =  moment(this.get('startDate'));
+    return startAtDate.format('MMM Do');
   }.property('startDate', 'startTime')
 });
 
