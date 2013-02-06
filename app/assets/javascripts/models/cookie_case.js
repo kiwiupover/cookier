@@ -1,5 +1,6 @@
 Gsc.CookieCase = DS.Model.extend({
   name: DS.attr('string'),
-  quantity: DS.attr('number'),
+  quantityStart: DS.attr('number'),
+  quantityEnd: DS.attr('number'),
   siteSale: DS.belongsTo('Gsc.SiteSale')
 });

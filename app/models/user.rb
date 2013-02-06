@@ -13,4 +13,5 @@ class User < ActiveRecord::Base
   belongs_to :troop
   has_many :site_sales
   has_many :participants
+  has_many :cookie_cases
 end

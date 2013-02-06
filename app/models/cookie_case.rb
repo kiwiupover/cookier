@@ -1,7 +1,8 @@
 class CookieCase < ActiveRecord::Base
-  attr_accessible :name, :quantity, :site_sale_id
+  attr_accessible :name, :quantity_start, :quantity_end, :site_sale_id, :user_id
 
   belongs_to :site_sale
+  belongs_to :user
 
   def cases_count
     "#{cases_base_ten.to_i} cases and boxes #{boxes_left_over}"

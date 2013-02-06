@@ -11,15 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130204173652) do
+ActiveRecord::Schema.define(:version => 20130205073553) do
 
   create_table "cookie_cases", :force => true do |t|
     t.string   "name"
-    t.string   "quantity"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.integer  "site_sale_id"
+    t.integer  "quantity_start"
+    t.integer  "quantity_end"
+    t.integer  "user_id"
   end
+
+  add_index "cookie_cases", ["user_id"], :name => "index_cookie_cases_on_user_id"
 
   create_table "participants", :force => true do |t|
     t.string   "first_name"
