@@ -19,7 +19,6 @@
                 optionValuePath="content.value"
                 optionLabelPath="content.display"
                 valueBinding="startTime"
-                selectionBinding="startTime"
                 prompt="Please select a time"
                 class="expand"
             }}
@@ -40,7 +39,6 @@
           {{view Ember.TextField valueBinding="quantityEnd" placeholder="Quantity" required="true"}}
         {{/each}}
       </div>
-
       <div class="form-actions mtm">
         <a href='#' {{action update target='controller'}} class='button radius'>{{buttonTitle}}</a>
         <a href='#' {{action cancel target='controller'}} class='mlm'>Cancel</a>

@@ -6,7 +6,7 @@ Gsc.SiteSalesNewController = Ember.ObjectController.extend({
 
     var cookieCases = this.get('cookieCases');
     this._createCookiesCases(cookieCases);
-
+    debugger;
     this.store.commit();
     this.content.addObserver('id', this, 'afterCreate');
   },
@@ -33,7 +33,8 @@ Gsc.SiteSalesNewController = Ember.ObjectController.extend({
     $(cookieTypes).each(function() {
       cookieCases.createRecord({
         name: this.name,
-        quantityStart: 0
+        quantityStart: 100,
+        quantityEnd: 30
       });
     });
   }

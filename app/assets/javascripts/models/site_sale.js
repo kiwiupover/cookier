@@ -26,12 +26,15 @@ Gsc.SiteSale = DS.Model.extend({
   }.property('cookieCases.@each.quantity'),
 
   siteSaleTime: function() {
-    startAtDate =  moment(this.get('startDate'));
-    startAtTime =  moment(this.get('startTime'), "HH:mm");
-    debugger;
-    date = moment(startAtDate.format('YYYY MM DD') + " " + startAtTime.format('HH:mm'));
+    if (this.get('startTime') !== null && this.get('startDate') !== null) {
+      startAtDate =  moment(this.get('startDate'));
+      startAtTime =  moment(this.get('startTime'), "HH:mm");
+      date = moment(startAtDate.format('YYYY MM DD') + " " + startAtTime.format('HH:mm'));
 
-    return date.format('dddd, MMM Do') + " at " + date.format('h:mm:a');
+      return date.format('dddd, MMM Do') + " at " + date.format('h:mm:a');
+    } else {
+      return "Choose a Date";
+    }
   }.property('startDate', 'startTime'),
 
   siteSaleDateSmall: function() {
