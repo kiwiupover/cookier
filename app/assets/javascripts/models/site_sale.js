@@ -4,6 +4,21 @@ Gsc.SiteSale = DS.Model.extend({
   startTime: DS.attr('string'),
   cookieCases: DS.hasMany('Gsc.CookieCase'),
 
+  locationName: function() {
+    var location = this.get('location');
+
+    if (!location) {
+      if (this.get('id') === undefined) {
+        return '(New Location)';
+      } else {
+        return '(New Location)';
+      }
+    }
+    if (location === undefined) location = '';
+
+    return location;
+  }.property('location'),
+
   boxes: function() {
     return this.get('cookieCases').getEach('quantity').reduce(function(accum, item) {
       return accum + item;
@@ -12,12 +27,26 @@ Gsc.SiteSale = DS.Model.extend({
 
   siteSaleTime: function() {
     startAtDate =  moment(this.get('startDate'));
-    return startAtDate.format('dddd, MMM Do') + " at " + startAtDate.format('h:mma') + " to " + startAtDate.add('h', 2).format('h:mma');
+    startAtTime =  moment(this.get('startTime'), "HH:mm");
+    debugger;
+    date = moment(startAtDate.format('YYYY MM DD') + " " + startAtTime.format('HH:mm'));
+
+    return date.format('dddd, MMM Do') + " at " + date.format('h:mm:a');
   }.property('startDate', 'startTime'),
 
-  siteSaleDate: function() {
+  siteSaleDateSmall: function() {
     startAtDate =  moment(this.get('startDate'));
     return startAtDate.format('MMM Do');
+  }.property('startDate'),
+
+
+  siteSaleDate: function() {
+    if (this.get('startDate') != undefined) {
+      startAtDate =  moment(this.get('startDate'));
+      return startAtDate.format('MM/DD/YYYY');
+    } else {
+      return "No Date";
+    }
   }.property('startDate')
 });
 

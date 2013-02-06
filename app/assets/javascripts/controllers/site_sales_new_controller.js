@@ -1,8 +1,7 @@
 Gsc.SiteSalesNewController = Ember.ObjectController.extend({
 
   update: function() {
-
-    var setDate = new Date(this.get('startDate') + " " + this.get('startTime'));
+    var setDate = new Date(this.get('siteSaleDate'));
     this.set('startDate', setDate);
 
     var cookieCases = this.get('cookieCases');
@@ -32,7 +31,6 @@ Gsc.SiteSalesNewController = Ember.ObjectController.extend({
           {'name': 'Trefoils'}
         ];
     $(cookieTypes).each(function() {
-      debugger;
       cookieCases.createRecord({
         name: this.name,
         quantityStart: 0

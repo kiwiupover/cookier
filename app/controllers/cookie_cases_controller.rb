@@ -11,7 +11,6 @@
   end
 
   def create
-    binding.pry
     cookie_case =  current_user.cookie_cases.new(params[:cookie_case])
     if cookie_case.save
       render json: cookie_case, status: :ok
