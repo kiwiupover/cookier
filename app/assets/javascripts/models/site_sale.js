@@ -32,9 +32,10 @@ Gsc.SiteSale = DS.Model.extend({
   }.property('cookieCases.@each.quantityEnd'),
 
   totalSales: function() {
-    return this.get('cookieCases').getEach('quantityStart').reduce(function(accum, item) {
-      return "$" + ((accum + item) * 4);
+    total = this.get('cookieCases').getEach('quantityStart').reduce(function(accum, item) {
+      return ((accum + item));
     }, 0);
+    return "$" + (total * 4)
   }.property('cookieCases.@each.quantityStart'),
 
   siteSaleTime: function() {
