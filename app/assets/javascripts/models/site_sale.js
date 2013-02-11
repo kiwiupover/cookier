@@ -19,11 +19,23 @@ Gsc.SiteSale = DS.Model.extend({
     return location;
   }.property('location'),
 
-  boxes: function() {
-    return this.get('cookieCases').getEach('quantity').reduce(function(accum, item) {
+  boxesStart: function() {
+    return this.get('cookieCases').getEach('quantityStart').reduce(function(accum, item) {
       return accum + item;
     }, 0);
-  }.property('cookieCases.@each.quantity'),
+  }.property('cookieCases.@each.quantityStart'),
+
+  boxesEnd: function() {
+    return this.get('cookieCases').getEach('quantityEnd').reduce(function(accum, item) {
+      return accum + item;
+    }, 0);
+  }.property('cookieCases.@each.quantityEnd'),
+
+  totalSales: function() {
+    return this.get('cookieCases').getEach('quantityStart').reduce(function(accum, item) {
+      return "$" + ((accum + item) * 4);
+    }, 0);
+  }.property('cookieCases.@each.quantityStart'),
 
   siteSaleTime: function() {
     if (this.get('startTime') !== null && this.get('startDate') !== null) {
@@ -40,17 +52,8 @@ Gsc.SiteSale = DS.Model.extend({
   siteSaleDateSmall: function() {
     startAtDate =  moment(this.get('startDate'));
     return startAtDate.format('MMM Do');
-  }.property('startDate'),
-
-
-  siteSaleDate: function() {
-    if (this.get('startDate') != undefined) {
-      startAtDate =  moment(this.get('startDate'));
-      return startAtDate.format('MM/DD/YYYY');
-    } else {
-      return "No Date";
-    }
   }.property('startDate')
+
 });
 
 Gsc.siteSalesTimes = [
@@ -62,8 +65,8 @@ Gsc.siteSalesTimes = [
   Ember.Object.create({display: "10:30 am", value: "10:30"}),
   Ember.Object.create({display: "11:00 am", value: "11:00"}),
   Ember.Object.create({display: "11:30 am", value: "11:30"}),
-  Ember.Object.create({display: "12:00 am", value: "12:00"}),
-  Ember.Object.create({display: "12:30 am", value: "12:30"}),
+  Ember.Object.create({display: "12:00 pm", value: "12:00"}),
+  Ember.Object.create({display: "12:30 pm", value: "12:30"}),
   Ember.Object.create({display: "1:00 pm",  value: "13:00"}),
   Ember.Object.create({display: "1:30 pm",  value: "13:30"}),
   Ember.Object.create({display: "2:00 pm",  value: "14:00"}),

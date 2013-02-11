@@ -21,15 +21,11 @@ Gsc.CookieCase = DS.Model.extend({
   }.property('quantityEnd'),
 
   caseCountCheckOut: function() {
-    if (boxesLeftOverCheckOut === "0") {
-      return casesBaseTenCheckOut + " cases";
-    } else {
-      return casesBaseTenCheckOut + " cases and boxes " + boxesLeftOverCheckOut;
-    }
+    return this.casesBaseTenCheckOut + " cases and boxes " + this.boxesLeftOverCheckOut;
   }.property('quantityStart'),
 
   caseCountCheckIn: function() {
-    if (boxesLeftOverCheckOut === "0") {
+    if (this.boxesLeftOverCheckOut === "0") {
       return casesBaseTenCheckIn + " cases";
     } else {
       return casesBaseTenCheckIn + " cases and boxes " + boxesLeftOverCheckIn;

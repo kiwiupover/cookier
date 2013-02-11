@@ -9,7 +9,6 @@ Gsc.SiteSalesEditController = Ember.ObjectController.extend({
     if (this.get('startDate') != setDate){
       this.set('startDate', setDate);
     }
-    debugger;
     this.store.commit();
     return this.transitionToRoute('siteSales.show', this.content);
   },

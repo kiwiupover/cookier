@@ -9,7 +9,7 @@
         </div>
         <div class="six columns">
           <label class="control-label" for="startAt">Start Date</label>
-          {{view Gsc.DatePicker valueBinding="siteSaleDate" placeholder="Start Date" required="true" class="datepicker" }}
+          {{view Gsc.DatePicker valueBinding="startDate" placeholder="Start Date" required="true" class="datepicker" }}
         </div>
         <div class="six columns">
           <label class="control-label" for="startAt">Start Time</label>
@@ -18,7 +18,7 @@
                 contentBinding="Gsc.siteSalesTimes"
                 optionValuePath="content.value"
                 optionLabelPath="content.display"
-                valueBinding="startTime"
+                valueBinding="content.startTime"
                 prompt="Please select a time"
                 class="expand"
             }}

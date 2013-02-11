@@ -11,7 +11,6 @@ Gsc.SiteSalesNewController = Ember.ObjectController.extend({
     this.content.addObserver('id', this, 'afterCreate');
   },
   afterCreate: function() {
-    this.content.removeObserver('id', this, 'afterCreate');
     this.transitionToRoute('siteSales.show', this.content);
   },
   cancel: function() {

@@ -9,6 +9,7 @@ Gsc.ParticipantsEditController = Ember.ObjectController.extend({
     return this.transitionTo('participants.show', this.content);
   },
   cancel: function() {
+    debugger;
     if (this.content.isDirty) {
       this.content.rollback();
     }
