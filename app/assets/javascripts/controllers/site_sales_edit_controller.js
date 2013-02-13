@@ -13,9 +13,7 @@ Gsc.SiteSalesEditController = Ember.ObjectController.extend({
     return this.transitionToRoute('siteSales.show', this.content);
   },
   cancel: function() {
-    if (this.content.isDirty) {
-      this.content.rollback();
-    }
+    this.get('transaction').rollback()
     return this.transitionTo('siteSales.show', this.content);
   },
   buttonTitle: 'Update',
