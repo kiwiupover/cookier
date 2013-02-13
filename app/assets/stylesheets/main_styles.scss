@@ -1,0 +1,31 @@
+#inventory-editor {
+  .cookie-count {
+    background: #eee;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 20px;
+    h3 {
+      padding-top: 25px;
+    }
+    label {
+      text-align: center;
+    }
+  }
+  .cases {
+    input {
+      font-size: 70px;
+      height: 100px;
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+  .boxes {
+    padding-top: 30px;
+    input {
+      font-size: 30px;
+      height: 50px;
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+}

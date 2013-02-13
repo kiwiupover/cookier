@@ -4,21 +4,57 @@ Gsc.SiteSale = DS.Model.extend({
   startTime: DS.attr('string'),
   cookieCases: DS.hasMany('Gsc.CookieCase'),
 
-  boxes: function() {
-    return this.get('cookieCases').getEach('quantity').reduce(function(accum, item) {
+  locationName: function() {
+    var location = this.get('location');
+
+    if (!location) {
+      if (this.get('id') === undefined) {
+        return '(New Location)';
+      } else {
+        return '(New Location)';
+      }
+    }
+    if (location === undefined) location = '';
+
+    return location;
+  }.property('location'),
+
+  boxesStart: function() {
+    return this.get('cookieCases').getEach('quantityStart').reduce(function(accum, item) {
       return accum + item;
     }, 0);
-  }.property('cookieCases.@each.quantity'),
+  }.property('cookieCases.@each.quantityStart'),
+
+  boxesEnd: function() {
+    return this.get('cookieCases').getEach('quantityEnd').reduce(function(accum, item) {
+      return accum + item;
+    }, 0);
+  }.property('cookieCases.@each.quantityEnd'),
+
+  totalSales: function() {
+    total = this.get('cookieCases').getEach('quantityStart').reduce(function(accum, item) {
+      return ((accum + item));
+    }, 0);
+    return "$" + (total * 4)
+  }.property('cookieCases.@each.quantityStart'),
 
   siteSaleTime: function() {
-    startAtDate =  moment(this.get('startDate'));
-    return startAtDate.format('dddd, MMM Do') + " at " + startAtDate.format('h:mma') + " to " + startAtDate.add('h', 2).format('h:mma');
+    if (this.get('startTime') !== null && this.get('startDate') !== null) {
+      startAtDate =  moment(this.get('startDate'));
+      startAtTime =  moment(this.get('startTime'), "HH:mm");
+      date = moment(startAtDate.format('YYYY MM DD') + " " + startAtTime.format('HH:mm'));
+
+      return date.format('dddd, MMM Do') + " at " + date.format('h:mm:a');
+    } else {
+      return "Choose a Date";
+    }
   }.property('startDate', 'startTime'),
 
-  siteSaleDate: function() {
+  siteSaleDateSmall: function() {
     startAtDate =  moment(this.get('startDate'));
     return startAtDate.format('MMM Do');
-  }.property('startDate', 'startTime')
+  }.property('startDate')
+
 });
 
 Gsc.siteSalesTimes = [
@@ -30,8 +66,8 @@ Gsc.siteSalesTimes = [
   Ember.Object.create({display: "10:30 am", value: "10:30"}),
   Ember.Object.create({display: "11:00 am", value: "11:00"}),
   Ember.Object.create({display: "11:30 am", value: "11:30"}),
-  Ember.Object.create({display: "12:00 am", value: "12:00"}),
-  Ember.Object.create({display: "12:30 am", value: "12:30"}),
+  Ember.Object.create({display: "12:00 pm", value: "12:00"}),
+  Ember.Object.create({display: "12:30 pm", value: "12:30"}),
   Ember.Object.create({display: "1:00 pm",  value: "13:00"}),
   Ember.Object.create({display: "1:30 pm",  value: "13:30"}),
   Ember.Object.create({display: "2:00 pm",  value: "14:00"}),

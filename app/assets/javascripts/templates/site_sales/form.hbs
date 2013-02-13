@@ -1,21 +1,17 @@
 <div class="row">
   <div class="twelve columns">
-    <form {{action save content on="submit"}} class="custom">
-      <h3>{{headerTitle}} {{location}}</h3>
+    <form class="custom">
+      <h3>{{headerTitle}} {{locationName}}</h3>
       <div class="row">
         <div class="twelve columns">
           <label class="control-label" for="location">Location</label>
-          <div class="controls">
-            {{view Ember.TextField valueBinding="location" id="location" placeholder="Location" required="true"}}
-          </div>
+          {{view Ember.TextField valueBinding="location" id="location" placeholder="Location" required="true"}}
         </div>
         <div class="six columns">
           <label class="control-label" for="startAt">Start Date</label>
-          <div class="controls">
-            {{view Ember.TextField valueBinding="startDate" id="startDate" placeholder="Start Date" required="true"  class="datepicker"}}
-          </div>
+          {{view Gsc.DatePicker valueBinding="startDate" placeholder="Start Date" required="true" class="datepicker" }}
         </div>
-        <div class="tix columns">
+        <div class="six columns">
           <label class="control-label" for="startAt">Start Time</label>
           <div class="controls">
             {{view Ember.Select
@@ -29,14 +25,20 @@
           </div>
         </div>
       </div>
-
-      {{#each cookieCases}}
-        <label class="control-label" for="cookies-{{id}}">{{name}}</label>
-        <div class="controls">
-          {{view Ember.TextField valueBinding="quantity" placeholder="Quantity" required="true"}}
-        </div>
-      {{/each}}
-
+      <div class="six columns panel">
+        <h3>Start Inventory</h3>
+        {{#each cookieCases}}
+          <label class="control-label" for="cookies-{{id}}">{{name}}</label>
+          {{view Ember.TextField valueBinding="quantityStart" placeholder="Quantity" required="true"}}
+        {{/each}}
+      </div>
+      <div class="six columns panel">
+        <h3>Ending Inventory</h3>
+        {{#each cookieCases}}
+          <label class="control-label" for="cookies-{{id}}">{{name}}</label>
+          {{view Ember.TextField valueBinding="quantityEnd" placeholder="Quantity" required="true"}}
+        {{/each}}
+      </div>
       <div class="form-actions mtm">
         <a href='#' {{action update target='controller'}} class='button radius'>{{buttonTitle}}</a>
         <a href='#' {{action cancel target='controller'}} class='mlm'>Cancel</a>
@@ -44,4 +46,3 @@
     </form>
   </div>
 </div>
-

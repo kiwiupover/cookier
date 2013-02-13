@@ -5,7 +5,6 @@ Gsc.ParticipantsNewController = Ember.ObjectController.extend({
   },
   afterCreate: function() {
     this.content.removeObserver('id', this, 'afterCreate');
-    debugger;
     this.transitionToRoute('participants.show', this.content);
   },
   cancel: function() {

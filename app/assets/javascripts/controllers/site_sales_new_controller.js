@@ -1,7 +1,7 @@
 Gsc.SiteSalesNewController = Ember.ObjectController.extend({
 
   update: function() {
-    var setDate = new Date(this.get('startDate') + " " + this.get('startTime'));
+    var setDate = new Date(this.get('startDate'));
     this.set('startDate', setDate);
 
     var cookieCases = this.get('cookieCases');
@@ -11,7 +11,6 @@ Gsc.SiteSalesNewController = Ember.ObjectController.extend({
     this.content.addObserver('id', this, 'afterCreate');
   },
   afterCreate: function() {
-    this.content.removeObserver('id', this, 'afterCreate');
     this.transitionToRoute('siteSales.show', this.content);
   },
   cancel: function() {
@@ -33,7 +32,8 @@ Gsc.SiteSalesNewController = Ember.ObjectController.extend({
     $(cookieTypes).each(function() {
       cookieCases.createRecord({
         name: this.name,
-        quantity: 0
+        quantityStart: 100,
+        quantityEnd: 30
       });
     });
   }

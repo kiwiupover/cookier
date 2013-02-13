@@ -1,19 +1,37 @@
 <h2>{{location}}</h2>
 <p>{{siteSaleTime}}</p>
-<p>{{siteTime}}</p>
 
-<h3>Cookies</h3>
-<ul class="no-bullet">
-  {{#each cookieCases}}
-    <li>
-      <strong>{{name}}</strong> {{quantity}}
-    </li>
-  {{/each}}
-</ul>
-{{#if boxes}}
-  <h4>Total <span>{{boxes}} Boxes</span></h4>
-{{/if}}
 
-{{#linkTo siteSales.edit content class="button radius"}}Edit{{/linkTo}}
+<div class="four columns panel radius">
+  <h4>{{#linkTo siteSales.checkout content }}Checkout{{/linkTo}}</h4>
+</div>
+<div class="four columns offset-by-two panel radius">
+  <h4>{{#linkTo siteSales.checkin content}}Checkin{{/linkTo}}</h4>
+</div>
+<div class="die"></div>
+<div class="row">
+  <div class="twelve columns">
+  {{#if boxesStart}}
+    <h3>Cookies</h3>
+    <ul class="no-bullet">
+      {{#each cookieCases}}
+        <li>
+          <strong>{{name}}</strong> {{quantityStart}}
+        </li>
+      {{/each}}
+    </ul>
+    <h4>Total <span>{{boxesStart}} Boxes</span></h4>
+    <h3>{{totalSales}}</h3>
+  {{/if}}
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="twelve columns">
+    {{#linkTo siteSales.edit content class="button radius"}}Edit{{/linkTo}}
+  </div>
+</div>
+
 
 {{outlet}}
