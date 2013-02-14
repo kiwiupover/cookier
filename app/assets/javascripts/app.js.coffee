@@ -1,11 +1,7 @@
 jQuery ->
   $(document).foundationAlerts()
-  $(document).foundationButtons()
-  $(document).foundationAccordion()
   $(document).foundationNavigation()
   $(document).foundationTopBar()
-  $(document).foundationCustomForms()
   $(document).foundationMediaQueryViewer()
   $(document).foundationTabs()
   $(document).foundationTooltips()
-  $('input, textarea').placeholder()
