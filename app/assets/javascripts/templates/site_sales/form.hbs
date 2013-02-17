@@ -9,7 +9,7 @@
         </div>
         <div class="six columns">
           <label class="control-label" for="startAt">Start Date</label>
-          {{view Gsc.DatePicker valueBinding="startDate" placeholder="Start Date" required="true" class="datepicker" }}
+          {{view Gsc.DatePicker dataBinding="startDate" valueBinding="startDate" placeholder="Start Date" required="true" class="datepicker" }}
         </div>
         <div class="six columns">
           <label class="control-label" for="startAt">Start Time</label>
@@ -24,20 +24,6 @@
             }}
           </div>
         </div>
-      </div>
-      <div class="six columns panel">
-        <h3>Start Inventory</h3>
-        {{#each cookieCases}}
-          <label class="control-label" for="cookies-{{id}}">{{name}}</label>
-          {{view Ember.TextField valueBinding="quantityStart" placeholder="Quantity" required="true"}}
-        {{/each}}
-      </div>
-      <div class="six columns panel">
-        <h3>Ending Inventory</h3>
-        {{#each cookieCases}}
-          <label class="control-label" for="cookies-{{id}}">{{name}}</label>
-          {{view Ember.TextField valueBinding="quantityEnd" placeholder="Quantity" required="true"}}
-        {{/each}}
       </div>
       <div class="form-actions mtm">
         <a href='#' {{action update target='controller'}} class='button radius'>{{buttonTitle}}</a>

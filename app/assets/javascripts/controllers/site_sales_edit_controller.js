@@ -5,10 +5,9 @@ Gsc.SiteSalesEditController = Ember.ObjectController.extend({
     return this.transitionTo('siteSales.index');
   },
   update: function() {
-    var setDate = new Date(this.get('siteSaleDate'));
-    if (this.get('startDate') != setDate){
-      this.set('startDate', setDate);
-    }
+    date = new Date(this.get('startDate'))
+    this.set('startDate', date)
+
     this.store.commit();
     return this.transitionToRoute('siteSales.show', this.content);
   },

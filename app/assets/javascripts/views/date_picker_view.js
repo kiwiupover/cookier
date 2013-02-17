@@ -4,9 +4,9 @@ Gsc.DatePicker = Ember.TextField.extend({
   placeHolder: "Start Date",
   attributeBindings: ['data','value','format','readonly','type','size'],
   type: "text",
-  format: 'DD, d MM, yy',
+  format: 'dd MM, yy',
 
-  value:function(){
+  value: function(){
     var date = this.get('data');
 
     if(date){
@@ -23,6 +23,6 @@ Gsc.DatePicker = Ember.TextField.extend({
        console.log($(".datepicker").attr("value"));
        self.set('data', ev.date);
     };
-    this.$().datepicker({ format:this.get(this.get('format')) }).on('changeDate', onChangeDate);
+    this.$().datepicker({ dateFormat: this.get('format') }).on('changeDate', onChangeDate);
   }
 });

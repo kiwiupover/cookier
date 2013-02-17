@@ -12,6 +12,7 @@ class SiteSalesController < ApplicationController
   end
 
   def create
+    binding.pry
     params[:site_sale][:cookie_cases_attributes] = params[:site_sale].delete(:cookie_cases) if params[:site_sale].has_key? :cookie_cases
 
     site_sale = current_user.site_sales.new(params[:site_sale])

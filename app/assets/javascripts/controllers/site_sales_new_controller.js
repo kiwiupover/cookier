@@ -1,8 +1,8 @@
 Gsc.SiteSalesNewController = Ember.ObjectController.extend({
 
   update: function() {
-    var setDate = new Date(this.get('startDate'));
-    this.set('startDate', setDate);
+    date = new Date(this.get('startDate'))
+    this.set('startDate', date)
 
     var cookieCases = this.get('cookieCases');
     this._createCookiesCases(cookieCases);
@@ -19,6 +19,11 @@ Gsc.SiteSalesNewController = Ember.ObjectController.extend({
   },
   buttonTitle: 'Create',
   headerTitle: 'Creating',
+
+  prettyDate: function() {
+    momemtDate = moment(this.get('startDate'));
+    return  momemtDate.format('Do MMMM YYYY');
+  }.property('startDate'),
 
   _createCookiesCases: function(cookieCases) {
     var cookieTypes = [

@@ -50,9 +50,16 @@ Gsc.SiteSale = DS.Model.extend({
     }
   }.property('startDate', 'startTime'),
 
+  momentStartFullTime: function() {
+    if (this.get('startTime') !== null && this.get('startDate') !== null) {
+      startAtDate =  moment(this.get('startDate'));
+      startAtTime =  moment(this.get('startTime'), "HH:mm");
+      return moment(startAtDate.format('YYYY MM DD') + " " + startAtTime.format('HH:mm'));
+    }
+  }.property('startDate', 'startTime'),
+
   siteSaleDateSmall: function() {
-    startAtDate =  moment(this.get('startDate'));
-    return startAtDate.format('MMM Do');
+    return this.get('momentStartFullTime').format('MMM Do');
   }.property('startDate')
 
 });
