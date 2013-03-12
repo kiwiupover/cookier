@@ -1,4 +1,4 @@
-Gsc.SiteSalesNewController = Ember.ObjectController.extend({
+  Gsc.SiteSalesNewController = Ember.ObjectController.extend({
 
   update: function() {
     date = new Date(this.get('startDate'))

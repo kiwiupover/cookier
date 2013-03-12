@@ -4,4 +4,5 @@ Gsc.SiteSalesEditView = Em.View.extend({
     this.$().foundationCustomForms();
     this.$('input:first').focus();
   }
+
 });

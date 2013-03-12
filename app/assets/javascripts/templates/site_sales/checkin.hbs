@@ -1,5 +1,5 @@
 <h2>{{location}} <small>{{siteSaleTime}}</small></h2>
-<h5>Starting Site Sale Inventory</h5>
+<h5>Checking in Site Sale Inventory</h5>
 <div class="twelve columns">
   <form class="custom row" id="inventory-editor">
     {{#each cookieCases}}
@@ -9,11 +9,11 @@
         </div>
         <div class="three columns cases">
           <label class="control-label" for="cookies-{{id}}">Cases</label>
-          {{view Ember.TextField valueBinding="casesBaseTenCheckOut" placeholder="Cases Quantity" required="true" }}
+          {{view Ember.TextField valueBinding="casesBaseTenCheckIn" placeholder="Cases Quantity" required="true" }}
         </div>
         <div class="two columns boxes">
           <label class="control-label" for="cookies-{{id}}">Boxes</label>
-          {{view Ember.TextField valueBinding="boxesLeftOverCheckOut" placeholder="Boxes Quantity" required="true" }}
+          {{view Ember.TextField valueBinding="boxesLeftOverCheckIn" placeholder="Boxes Quantity" required="true" }}
         </div>
         <div class="die"></div>
       </div>

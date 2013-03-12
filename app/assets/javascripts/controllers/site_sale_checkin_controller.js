@@ -1,4 +1,4 @@
-Gsc.SiteSalesCheckoutController = Ember.ObjectController.extend({
+Gsc.SiteSalesCheckinController = Ember.ObjectController.extend({
   update: function() {
 
     this.get('cookieCases').forEach(function(cookieCase) {
