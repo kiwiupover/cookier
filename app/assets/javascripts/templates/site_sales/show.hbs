@@ -1,9 +1,10 @@
 <h2>{{location}} <small>{{siteSaleTime}}</small></h2>
 
-<div class="four columns panel radius">
+
+<div class="four columns panel radius text-center">
   <h4>{{#linkTo siteSales.checkout content }}Checkout{{/linkTo}}</h4>
 </div>
-<div class="four columns offset-by-two panel radius">
+<div class="four columns offset-by-two panel radius text-center">
   <h4>{{#linkTo siteSales.checkin content}}Checkin{{/linkTo}}</h4>
 </div>
 <div class="die"></div>
@@ -14,19 +15,34 @@
     <ul class="no-bullet">
       {{#each cookieCases}}
         <li>
-          <strong>{{name}}</strong> {{quantityStart}}
+          <div class='row'>
+            <div class="four columns">
+              <strong>{{name}}</strong>
+            </div>
+            <div class="two columns">
+              starting: {{quantityStart}}
+            </div>
+            {{#if quantityEnd}}
+              <div class="two columns">
+                ending:  {{quantityEnd}}
+              </div>
+              <div class="two columns">
+                total sold: {{totalSold}}
+              </div>
+            {{/if}}
+          </div>
         </li>
       {{/each}}
     </ul>
-    <h4>Total <span>{{boxesStart}} Boxes</span></h4>
-    <h3>{{totalSales}}</h3>
+    <h4>Total Boxes Sold: <span>{{totalBoxesSold}}</span></h4>
+    <h3>Total Sales: {{totalSales}}</h3>
   {{/if}}
   </div>
 </div>
 
 <div class="row">
   <div class="twelve columns">
-    {{#linkTo siteSales.edit content class="button radius"}}Edit{{/linkTo}}
+    {{#linkTo siteSales.edit content class="button small radius"}}Edit{{/linkTo}}
   </div>
 </div>
 

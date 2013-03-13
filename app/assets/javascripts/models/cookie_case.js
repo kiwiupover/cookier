@@ -32,6 +32,10 @@ Gsc.CookieCase = DS.Model.extend({
     }
   }.property('quantityEnd'),
 
+  totalSold: function() {
+    return parseInt(this.get('quantityStart') - this.get('quantityEnd'));
+  }.property('quantityStart', 'quantityEnd'),
+
   _baseTen: function(quantity) {
     return quantity / 12.0;
   },

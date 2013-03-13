@@ -13,16 +13,15 @@
  #    { name: 'Dulce de Leche' },
  #    { name: 'Mango Cremes' },
  #    { name: 'Thank U Berry Munch' }]
-CookieCase.create  name: 'Thin Mint', site_sale_id: 1
-CookieCase.create  name: 'Samoas', site_sale_id: 1
-CookieCase.create  name: 'Tagalongs', site_sale_id: 1
-CookieCase.create  name: 'Lemonades', site_sale_id: 1
-CookieCase.create  name: 'Do-si-dos', site_sale_id: 1
-CookieCase.create  name: 'Savannah Smiles', site_sale_id: 1
-CookieCase.create  name: 'Thanks-A-Lot', site_sale_id: 1
-CookieCase.create  name: 'Dulce de Leche', site_sale_id: 1
-CookieCase.create  name: 'Mango Cremes', site_sale_id: 1
-CookieCase.create  name: 'Thank U Berry Munch', site_sale_id: 1
-
+# CookieCase.create  name: 'Thin Mint', site_sale_id: 1
+# CookieCase.create  name: 'Samoas', site_sale_id: 1
+# CookieCase.create  name: 'Tagalongs', site_sale_id: 1
+# CookieCase.create  name: 'Lemonades', site_sale_id: 1
+# CookieCase.create  name: 'Do-si-dos', site_sale_id: 1
+# CookieCase.create  name: 'Savannah Smiles', site_sale_id: 1
+# CookieCase.create  name: 'Thanks-A-Lot', site_sale_id: 1
+# CookieCase.create  name: 'Dulce de Leche', site_sale_id: 1
+# CookieCase.create  name: 'Mango Cremes', site_sale_id: 1
+# CookieCase.create  name: 'Thank U Berry Munch', site_sale_id: 1
 
 #   Mayor.create(name: 'Emanuel', city: cities.first)

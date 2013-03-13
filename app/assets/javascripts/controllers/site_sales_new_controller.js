@@ -37,8 +37,8 @@
     $(cookieTypes).each(function() {
       cookieCases.createRecord({
         name: this.name,
-        quantityStart: 100,
-        quantityEnd: 30
+        quantityStart: 0,
+        quantityEnd: 0
       });
     });
   }

@@ -31,13 +31,6 @@ Gsc.SiteSale = DS.Model.extend({
     }, 0);
   }.property('cookieCases.@each.quantityEnd'),
 
-  totalSales: function() {
-    total = this.get('cookieCases').getEach('quantityStart').reduce(function(accum, item) {
-      return ((accum + item));
-    }, 0);
-    return "$" + (total * 4)
-  }.property('cookieCases.@each.quantityStart'),
-
   siteSaleTime: function() {
     if (this.get('startTime') !== null && this.get('startDate') !== null) {
       startAtDate =  moment(this.get('startDate'));
