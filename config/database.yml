@@ -5,6 +5,8 @@ development:
   pool: 5
   username: lairdd
   password:
+  host: localhost
+  post: 5432
 
 test:
   adapter: postgresql
@@ -13,6 +15,8 @@ test:
   pool: 5
   username: lairdd
   password:
+  host: localhost
+  port: 5432
 
 production:
   adapter: postgresql
