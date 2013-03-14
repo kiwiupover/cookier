@@ -2,10 +2,14 @@
 <h5>Starting Site Sale Inventory</h5>
 <div class="twelve columns">
   <form class="custom row" id="inventory-editor">
+    <h5>Particapants at this site sale.</h5>
+    {{view Ember.Select viewName="select"
+                        contentBinding="Gsc.participantsController"
+                        prompt="Pick a person:"}}
     {{#each cookieCases}}
       <div class="row cookie-count mbs">
         <div class="three columns">
-          <h3>{{name}}</h3>
+          <h5>{{name}}</h5>
         </div>
         <div class="three columns cases">
           <label class="control-label" for="cookies-{{id}}">Cases</label>

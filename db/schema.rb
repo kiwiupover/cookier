@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130211161457) do
+ActiveRecord::Schema.define(:version => 20130314031548) do
 
   create_table "cookie_cases", :force => true do |t|
     t.string   "name"
@@ -31,11 +31,13 @@ ActiveRecord::Schema.define(:version => 20130211161457) do
     t.string   "email"
     t.string   "phone"
     t.boolean  "parent"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.integer  "user_id"
+    t.integer  "site_sale_id"
   end
 
+  add_index "participants", ["site_sale_id"], :name => "index_participants_on_site_sale_id"
   add_index "participants", ["user_id"], :name => "index_participants_on_user_id"
 
   create_table "site_sales", :force => true do |t|

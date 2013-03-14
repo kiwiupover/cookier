@@ -1,6 +1,5 @@
 Gsc.SiteSalesShowController = Ember.ObjectController.extend({
   needs: 'cookieCases',
-  content: null,
   sortProperties: ['cookieCaes.name'],
 
   totalBoxesSold: function() {

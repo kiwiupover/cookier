@@ -3,6 +3,7 @@ Gsc.SiteSale = DS.Model.extend({
   startDate: DS.attr('date'),
   startTime: DS.attr('string'),
   cookieCases: DS.hasMany('Gsc.CookieCase'),
+  participants: DS.hasMany('Gsc.Participant'),
 
   locationName: function() {
     var location = this.get('location');
