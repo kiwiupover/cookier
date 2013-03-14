@@ -9,10 +9,17 @@ Gsc.SiteSalesShowController = Ember.ObjectController.extend({
   }.property('boxesStart', 'boxesEnd'),
 
   totalSales: function() {
-    total = parseInt(this.get('boxesStart') - this.get('boxesEnd'));
-    return "$" + (total * 4)
-  }.property('boxesStart', 'boxesEnd'),
+    return "$" + (this.get('totalBoxesSold') * 4)
+  }.property('totalBoxesSold'),
 
+  totalForBank: function() {
+  	total = parseInt((this.get('totalBoxesSold') * 4) - (this.get('totalBoxesSold') * 0.7));
+     return "$" + total;
+  }.property('totalBoxesSold'),
+
+  totalForTroop: function() {
+  	return "$" + parseInt(this.get('totalBoxesSold') * 0.7);
+  }.property('totalBoxesSold'),
 
   cookieCases: (function() {
     return Ember.ArrayProxy.createWithMixins(Ember.SortableMixin, {
