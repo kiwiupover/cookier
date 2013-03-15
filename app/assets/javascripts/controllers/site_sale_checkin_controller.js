@@ -19,5 +19,13 @@ Gsc.SiteSalesCheckinController = Ember.ObjectController.extend({
     return this.transitionTo('siteSales.show', this.content);
   },
   buttonTitle: 'Update',
-  headerTitle: 'Editing'
+  headerTitle: 'Editing',
+
+
+  cookieCases: (function() {
+    return Ember.ArrayProxy.createWithMixins(Ember.SortableMixin, {
+      sortProperties: ['name'],
+      content: this.get('content.cookieCases')
+    })
+  }).property('content.cookieCases')
 });

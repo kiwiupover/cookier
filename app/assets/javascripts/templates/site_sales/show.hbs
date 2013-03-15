@@ -4,9 +4,11 @@
 <div class="four columns panel radius text-center">
   <h4>{{#linkTo siteSales.checkout content }}Checkout{{/linkTo}}</h4>
 </div>
-<div class="four columns offset-by-two panel radius text-center">
-  <h4>{{#linkTo siteSales.checkin content}}Checkin{{/linkTo}}</h4>
-</div>
+{{#if boxesStart}}
+  <div class="four columns offset-by-two panel radius text-center">
+    <h4>{{#linkTo siteSales.checkin content}}Checkin{{/linkTo}}</h4>
+  </div>
+{{/if}}
 <div class="die"></div>
 <div class="row">
   <div class="twelve columns">
@@ -38,6 +40,8 @@
     <h4>Total for the troop: <span>{{totalForTroop}}</span></h4>
     <h4>Total for the bank: <span>{{totalForBank}}</span></h4>
     <h3>Total Sales: {{totalSales}}</h3>
+  {{else}}
+    <h4>Next Step: Checkout the cookies for this site sale.</h4>
   {{/if}}
   </div>
 </div>

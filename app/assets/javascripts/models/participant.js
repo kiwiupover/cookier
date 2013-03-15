@@ -4,6 +4,7 @@ Gsc.Participant = DS.Model.extend({
   email: DS.attr('string'),
   phone: DS.attr('string'),
   parent: DS.attr('boolean'),
+  siteSales: DS.attr('Gsc.SiteSale'),
   cookieCase: DS.belongsTo('Gsc.CookieCase'),
 
   fullName: function() {
