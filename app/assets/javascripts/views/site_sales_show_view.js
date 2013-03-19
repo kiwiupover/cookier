@@ -1,3 +1,3 @@
 Gsc.SiteSalesShowView = Ember.View.extend({
-  templateName: 'site_sales/show'
+  // templateName: 'site_sales/show'
 });

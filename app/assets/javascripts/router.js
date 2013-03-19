@@ -1,6 +1,6 @@
 Gsc.Router.map(function() {
   location: 'history',
-  this.resource('cookieCases');
+  // this.resource('cookieCases');
 
   this.resource('siteSales', function(){
     this.route('new');
@@ -8,6 +8,9 @@ Gsc.Router.map(function() {
     this.route('checkout', {path: '/:site_sale_id/checkout'});
     this.route('checkin', {path: '/:site_sale_id/checkin'});
     this.route('show', {path: '/:site_sale_id'});
+    this.resource('cookieCases', function() {
+      this.route('new');
+    });
   });
 
   this.resource('participants', function(){

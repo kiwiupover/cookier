@@ -1,7 +1,4 @@
 Gsc.SiteSalesShowController = Ember.ObjectController.extend({
-  needs: 'cookieCases',
-  sortProperties: ['cookieCaes.name'],
-
   totalBoxesSold: function() {
   	total = parseInt(this.get('boxesStart') - this.get('boxesEnd'));
   	return total;
