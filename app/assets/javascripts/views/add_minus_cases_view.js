@@ -1,12 +1,11 @@
 Gsc.AddMinusCases = Ember.View.extend({
   classNames: ['add-minus-textbox'],
-  valueBinding: "casesBaseTenCheckOut",
 
   template: Ember.Handlebars.compile(
+    '<button class="minus" {{action minus target="view"}}>Minus</button>' +
+    '{{view Ember.TextField valueBinding="casesBaseTenCheckOut" }}' +
     '<button class="add" {{action add target="view"}}>Add</button>' +
-    '<label class="control-label">Cases</label>' +
-    '{{view Ember.TextField valueBinding="casesBaseTenCheckOut" placeholder="Cases Quantity" required="true" }}' +
-    '<button class="minus" {{action minus target="view"}}>Minus</button>'),
+    '<label class="control-label">Cases</label>'),
 
   didInsertElement: function(){
  		console.log("AddMinusTextbox");

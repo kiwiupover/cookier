@@ -1,31 +1,70 @@
-mj#inventory-editor {
-  .cookie-count {
-    background: #eee;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    padding: 20px;
-    h3 {
-      padding-top: 25px;
+@import "compass/css3";
+body {
+  background: #a1a085;
+}
+
+h2 small {
+  color: #29281f;
+}
+
+.top-bar {
+  border-bottom: 2px solid #2e2e2c;
+}
+
+.add-minus-textbox {
+  float: left;
+  position: relative;
+  .add, input, .minus {
+    float: left;
+  }
+  button {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #a5a59a;
+    background:#ffcd00;
+    @include border-radius(100px);
+    position: absolute;
+    @include box-shadow(0 1px 3px #444, 0 -1px 2px #fff);
+    &.add {
+      right: -40px;
     }
-    label {
-      text-align: center;
+    &.minus {
+      left: -40px;
     }
   }
-  .cases {
-    input {
-      font-size: 70px;
-      height: 100px;
-      text-align: center;
-      font-weight: bold;
-    }
+  input {
+    margin-top: 5px;
+    font-size: 30px;
+    height: 40px;
+    text-align: center;
+    font-weight: bold;
+    width: 70px;
+    border:none;
+    color: #fff;
+    background:#000 !important;
   }
-  .boxes {
-    padding-top: 30px;
-    input {
-      font-size: 30px;
-      height: 50px;
-      text-align: center;
-      font-weight: bold;
-    }
+  label {
+    clear: both;
+    width: 100%;
+    text-align: center;
   }
+}
+
+.cookie-count {
+  background: #ddddcd;
+  border-radius: 5px;
+  margin-bottom: 10px !important;
+  padding: 20px;
+  h3 {
+    padding-top: 25px;
+  }
+  label {
+    text-align: center;
+  }
+}
+.cases {
+  margin-left: 50px;
+}
+.boxes {
+  padding-top: 30px;
 }
