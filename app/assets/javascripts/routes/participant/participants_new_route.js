@@ -4,9 +4,5 @@ Gsc.ParticipantsNewRoute = Ember.Route.extend({
       firstName: '',
       lastName: ''
     });
-  },
-  setupController: function(controller, model) {
-    this._super();
-    return controller.set('content', model);
   }
 });

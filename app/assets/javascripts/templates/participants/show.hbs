@@ -1,4 +1,11 @@
 <h3>{{fullName}}</h3>
+{{#if parent}}
+	<ul class="no-bullet">
+		<li>Email: {{email}}</li>
+		<li>Phone: {{phone}}</li>
+	</ul>
+
+{{/if}}
 
 {{outlet}}
 

@@ -1,15 +1,22 @@
 <h2>{{location}} <small>{{siteSaleTime}}</small></h2>
-<h5>Starting Site Sale Inventory</h5>
 <div class="twelve columns">
   <form class="custom row" id="inventory-editor">
+    <label>
+      {{view Ember.Checkbox checkedBinding="view.setAsRecurringAction"}}
+      {{location}}
+    </label>
     <h5>Particapants at this site sale.</h5>
     {{#each controllers.participants}}
-      <label>
-        {{view Ember.Checkbox checkedBinding="content.isDone"}}
-        {{fullName}}
+      <label class="checkbox">
+        {{view view.participantCheckbox siteBinding="controller.content" participantBinding="this"}}
+        {{ fullName }}
       </label>
     {{/each}}
-
+    participants
+    {{#each participants}}
+      name: {{fullName}}
+    {{/each}}
+    <h5>Starting Site Sale Inventory</h5>
     {{#each cookieCases}}
       <div class="row cookie-count mbs">
         <div class="three columns">
@@ -26,6 +33,7 @@
         <div class="die"></div>
       </div>
     {{/each}}
+
     <a href='#' {{action 'update' content}} class='button radius'>{{buttonTitle}}</a>
   </form>
 </div>

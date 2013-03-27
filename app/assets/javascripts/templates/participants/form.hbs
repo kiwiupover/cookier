@@ -10,21 +10,23 @@
     {{view Ember.TextField valueBinding="lastName" id="lastName" placeholder="Last name" required="true"}}
   </div>
   <div class="checkbox">
-    <label for="phone">
-    {{view Em.Checkbox checkedBinding="isExpaneded"}}
-    Parent
-  </label>
+    <label>
+      {{view Em.Checkbox checkedBinding="parent"}}
+      Parent
+    </label>
   </div>
-  <div class="parent-elements mtm">
-    <label class="control-label" for="email">Email Address</label>
-    <div class="controls">
-      {{view Ember.TextField valueBinding="email" id="email" placeholder="Email Address" required="true"}}
+  {{#if parent}}
+    <div class="parent-elements mtm">
+      <label class="control-label" for="email">Email Address</label>
+      <div class="controls">
+        {{view Ember.TextField valueBinding="email" id="email" placeholder="Email Address" required="true"}}
+      </div>
+      <label class="control-label" for="phone">Phone</label>
+      <div class="controls">
+        {{view Ember.TextField valueBinding="phone" id="phone" placeholder="Phone" required="true"}}
+      </div>
     </div>
-    <label class="control-label" for="phone">Phone</label>
-    <div class="controls">
-      {{view Ember.TextField valueBinding="phone" id="phone" placeholder="Phone" required="true"}}
-    </div>
-  </div>
+  {{/if}}
 
   <div class="form-actions mtm">
 

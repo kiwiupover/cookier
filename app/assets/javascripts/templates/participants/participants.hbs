@@ -11,12 +11,4 @@
   </div>
   <div class="columns eight">
     {{outlet}}
-    {{view Ember.Select
-            contentBinding="Gsc.participants.participantsList"
-            optionValuePath="content.value"
-            optionLabelPath="content.display"
-            valueBinding="startTime"
-            prompt="Please select a time"
-            class="expand"}}
-  </div>
 </div>

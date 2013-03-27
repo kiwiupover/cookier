@@ -5,5 +5,22 @@ Gsc.ParticipantsController = Ember.ArrayController.extend({
       sortProperties: ['firstName'],
       content: this.get('contents')
     })
-  }).property('content')
+  }).property('content'),
+
+	isParticipant: function() {
+		debugger;
+		alert("Dave");
+	},
+	participantsAtSiteSale: function(siteSale) {
+    var participants = this.get('participants');
+    return participants.filterProperty('siteSaleId', siteSale.get('id'));
+  }.property('participants.@each.siteSaleId'),
+
+  dave: (function(){
+  if(this.get('isParticipant')) {
+    alert('property checked');
+  } else {
+    alert('property unchecked');
+  }
+  }).observes('isParticipant')
 });

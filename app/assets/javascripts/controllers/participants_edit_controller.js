@@ -2,17 +2,17 @@ Gsc.ParticipantsEditController = Ember.ObjectController.extend({
   destroy: function() {
     this.content.deleteRecord();
     this.store.commit();
-    return this.transitionTo('participants');
+    return this.transitionToRoute('participants');
   },
   update: function() {
     this.store.commit();
-    return this.transitionTo('participants.show', this.content);
+    return this.transitionToRoute('participants.show', this.content);
   },
   cancel: function() {
     this.get('transaction').rollback()
-    return this.transitionTo('participants.show', this.content);
+    return this.transitionToRoute('participants.show', this.content);
   },
-  buttonTitle: 'Edit',
+  buttonTitle: 'Update',
   headerTitle: 'Editing'
 });
 
