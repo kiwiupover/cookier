@@ -8,7 +8,6 @@ Gsc.ParticipantsController = Ember.ArrayController.extend({
   }).property('content'),
 
 	isParticipant: function() {
-		debugger;
 		alert("Dave");
 	},
 	participantsAtSiteSale: function(siteSale) {

@@ -6,12 +6,11 @@ Gsc.SiteSalesCheckoutController = Ember.ObjectController.extend({
     var siteSaleID = this.content
 
     this.get('cookieCases').forEach(function(cookieCase) {
-      var cases = parseInt(cookieCase.get('casesBaseTenCheckOut')),
-          boxes = parseInt(cookieCase.get('boxesLeftOverCheckOut'));
-      boxesTotal = (cases * 12) + boxes;
+      var cases = cookieCase.get('casesBaseTenCheckOut'),
+          boxes = cookieCase.get('boxesLeftOverCheckOut');
+      boxesTotal = parseInt((cases * 12) + boxes);
       cookieCase.set('quantityStart', boxesTotal);
     });
-    debugger;
     this.store.commit();
     return this.transitionToRoute('siteSales.show', this.content);
   },
@@ -30,4 +29,5 @@ Gsc.SiteSalesCheckoutController = Ember.ObjectController.extend({
       content: this.get('content.cookieCases')
     })
   }).property('content.cookieCases')
+
 });

@@ -8,7 +8,7 @@
 //= require_tree ./routes
 //= require_self
 
-Gsc.initialize();
+// Gsc.initialize();
 
 
 

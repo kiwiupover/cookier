@@ -1,20 +1,12 @@
 <h2>{{location}} <small>{{siteSaleTime}}</small></h2>
 <div class="twelve columns">
   <form class="custom row" id="inventory-editor">
-    <label>
-      {{view Ember.Checkbox checkedBinding="view.setAsRecurringAction"}}
-      {{location}}
-    </label>
     <h5>Particapants at this site sale.</h5>
     {{#each controllers.participants}}
       <label class="checkbox">
         {{view view.participantCheckbox siteBinding="controller.content" participantBinding="this"}}
         {{ fullName }}
       </label>
-    {{/each}}
-    participants
-    {{#each participants}}
-      name: {{fullName}}
     {{/each}}
     <h5>Starting Site Sale Inventory</h5>
     {{#each cookieCases}}
@@ -23,12 +15,10 @@
           <h5>{{name}}</h5>
         </div>
         <div class="three columns cases">
-          <label class="control-label" for="cookies-{{id}}">Cases</label>
-          {{view Ember.TextField valueBinding="casesBaseTenCheckOut" placeholder="Cases Quantity" required="true" }}
+          {{view Gsc.AddMinusCases valueBinding="casesBaseTenCheckOut" placeholder="Cases Quantity"}}
         </div>
         <div class="two columns boxes">
-          <label class="control-label" for="cookies-{{id}}">Boxes</label>
-          {{view Ember.TextField valueBinding="boxesLeftOverCheckOut" placeholder="Boxes Quantity" required="true" }}
+          {{view Gsc.AddMinusBoxes valueBinding="boxesLeftOverCheckOut" placeholder="Boxes Quantity" }}
         </div>
         <div class="die"></div>
       </div>

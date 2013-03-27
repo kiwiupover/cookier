@@ -1,11 +1,11 @@
 Gsc.SiteSalesCheckinController = Ember.ObjectController.extend({
   needs: ['cookieCases', 'participants'],
-  sortProperties: ['cookieCaes.name'],
+  sortProperties: ['cookieCases.name'],
   update: function() {
     this.get('cookieCases').forEach(function(cookieCase) {
-      var cases = parseInt(cookieCase.get('casesBaseTenCheckIn')),
-          boxes = parseInt(cookieCase.get('boxesLeftOverCheckIn'));
-      boxesTotal = (cases * 12) + boxes;
+      var cases = cookieCase.get('casesBaseTenCheckIn'),
+          boxes = cookieCase.get('boxesLeftOverCheckIn');
+      boxesTotal = parseInt((cases * 12) + boxes);
       cookieCase.set('quantityEnd', boxesTotal);
     });
 
