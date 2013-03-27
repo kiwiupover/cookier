@@ -18,10 +18,10 @@ test:
   host: localhost
   port: 5432
 
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: thin_minting
-  pool: 5
-  username: lairdd
-  password:
+# production:
+#   adapter: postgresql
+#   encoding: unicode
+#   database: thin_minting
+#   pool: 5
+#   username: lairdd
+#   password:
