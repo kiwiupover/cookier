@@ -6,16 +6,13 @@
       <div class="row cookie-count mbs">
         <div class="three columns">
           <h5>{{name}}</h5>
+          Total Checkout: {{quantityStart}}
         </div>
-        <div class="three columns cases">
-          <button {{action add}}>Add</button>
-          <label class="control-label" for="cookies-{{id}}">Cases</label>
-          {{view Ember.TextField valueBinding="casesBaseTenCheckIn" placeholder="Cases Quantity" required="true" }}
-          <button {{action minus}}>Minus</button>
+        <div class="four columns cases">
+          {{view Gsc.AddMinusCasesCheckIn valueBinding="casesBaseTenCheckIn"}}
         </div>
-        <div class="two columns boxes">
-          <label class="control-label" for="cookies-{{id}}">Boxes</label>
-          {{view Ember.TextField valueBinding="boxesLeftOverCheckIn" placeholder="Boxes Quantity" required="true" }}
+        <div class="four columns boxes">
+          {{view Gsc.AddMinusBoxesCheckIn valueBinding="boxesLeftOverCheckIn" }}
         </div>
         <div class="die"></div>
       </div>
