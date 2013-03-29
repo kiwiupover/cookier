@@ -44,7 +44,10 @@
     <div id="container">
       <div class="row">
         <% flash.each do |name, msg| %>
-          <%= content_tag :div, msg, id: "flash_#{name}" %>
+          <div class="alert-box">
+            <%= content_tag :div, msg, id: "flash_#{name}" %>
+            <a href="" class="close">&times;</a>
+          </div>
         <% end %>
       </div>
     </div>
