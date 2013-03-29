@@ -34,6 +34,7 @@ gem 'devise'
 group :test, :development do
   gem 'letter_opener'
   gem "pry"
+  gem 'meta_request'
 end
 
 gem 'thin'

@@ -1,4 +1,5 @@
-  class CookieCasesController < ApplicationController
+class CookieCasesController < ApplicationController
+  before_filter :authenticate_user!
 
   def index
     cookie_cases = current_user.cookie_cases.all
