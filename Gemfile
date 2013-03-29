@@ -33,12 +33,15 @@ gem 'devise'
 
 group :test, :development do
   gem 'letter_opener'
+  gem "pry"
 end
 
 gem 'thin'
 gem 'puma'
 
-gem "pry"
+
+
+
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
