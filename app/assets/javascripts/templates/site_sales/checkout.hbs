@@ -1,7 +1,7 @@
 <h2>{{location}} <small>{{siteSaleTime}}</small></h2>
 <div class="twelve columns">
   <form class="custom row" id="inventory-editor">
-    <h5>Particapants at this site sale.</h5>
+    <h5>Participants at this site sale.</h5>
     {{#each controllers.participants}}
       <label class="checkbox">
         {{view view.participantCheckbox siteBinding="controller.content" participantBinding="this"}}
